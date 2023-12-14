@@ -46,12 +46,12 @@ public class Sonic extends Actor
         }
         for(int i = 0; i < sonicJumpRight.length; i++){
             sonicJumpRight[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
-            sonicJumpRight[i].scale(70, 70);
+            sonicJumpRight[i].scale(60, 60);
         }
         for(int i = 0; i < sonicJumpLeft.length; i++){
             sonicJumpLeft[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
             sonicJumpLeft[i].mirrorHorizontally();
-            sonicJumpLeft[i].scale(70, 70);
+            sonicJumpLeft[i].scale(60, 60);
         }
     }
     
@@ -108,13 +108,13 @@ public class Sonic extends Actor
         }
         if(getY() < 300){
             upwardsVelocity -= gravity;
-            if(right) setLocation(getX() + 2, getY() - upwardsVelocity);
-            else setLocation(getX() - 2, getY() - upwardsVelocity);
+            if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
+            else setLocation(getX() - 1, getY() - upwardsVelocity);
         }
         if(Greenfoot.isKeyDown("w") && onGround){
             upwardsVelocity += jumpForce;
-            if(right) setLocation(getX() + 2, getY() - upwardsVelocity);
-            else setLocation(getX() - 2, getY() - upwardsVelocity);
+            if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
+            else setLocation(getX() - 1, getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity-=gravity;
         }
@@ -123,16 +123,16 @@ public class Sonic extends Actor
     
     public void move(){    
         if(Greenfoot.isKeyDown("d")){
-            move(3);
+            move(5);
             right = true;
         }
         if(Greenfoot.isKeyDown("a")){
-            move(-3);
+            move(-5);
             right = false;
         }
         if(Greenfoot.isKeyDown("shift")){
-            if(right) move(5);
-            else move(-5);
+            if(right) move(7);
+            else move(-7);
         }
         if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || getY() < 300)){
             if(right){
