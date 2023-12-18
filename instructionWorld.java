@@ -39,8 +39,8 @@ public class instructionWorld extends World
         addObject(label,297,168);
         label.setLocation(322,157);
         Label label2 = new Label("press <shift> to sprint", 34);
-        addObject(label2,305,226);
-        label2.setLocation(310,226);
+        addObject(label2,305,245);
+        label2.setLocation(310,245);
         label.setLocation(317,173);
         label2.setLocation(399,221);
         Label label3 = new Label("Don't touch little creatures and enjoy!!!", 34);
@@ -53,5 +53,9 @@ public class instructionWorld extends World
         //Label label4 = new Label("< back to menu", 30);
         addObject(label4,172,59);
         label4.setLocation(151,45);
+        label3.setLocation(280,304);
+        label2.setLocation(331,247);
+        label.setLocation(336,199);
+        label2.setLocation(324,243);
     }
 }

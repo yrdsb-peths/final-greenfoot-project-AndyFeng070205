@@ -49,5 +49,14 @@ public class titleWorld extends World
         label.setLocation(390,361);
         label.setLocation(397,369);
         label2.setLocation(192,362);
+        label.setLocation(400,363);
+        label2.setLocation(209,362);
+        label.setLocation(417,356);
+        label2.setLocation(191,359);
+        label.setLocation(429,358);
+        label2.setLocation(212,353);
+        label2.setLocation(201,356);
+        label.setLocation(417,361);
+        label.setLocation(423,356);
     }
 }
