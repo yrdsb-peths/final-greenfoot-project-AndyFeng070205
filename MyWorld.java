@@ -18,9 +18,8 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 400, 1);
         Sonic sonic = new Sonic();
-        addObject(new Background(), 300, 200);
         addObject(sonic, 300, 300);
         Ground ground = new Ground();
-        addObject(ground, 300, 380);
+        //addObject(ground, 300, 380);
     }
 }

@@ -12,6 +12,7 @@ public class Sonic extends Actor
      * Act - do whatever the Sonic wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    private int life = 3;
     public boolean right = true;
     SimpleTimer timer = new SimpleTimer();
     GreenfootImage SonicStart = new GreenfootImage("images/Sonic_walk/sonic_0.png");
@@ -143,6 +144,12 @@ public class Sonic extends Actor
                 setImage(SonicStopLeft);
                 SonicStopLeft.scale(70, 70);
             }
+        }
+    }
+    
+    public void damage(){
+        if(isTouching(Monsters.class)){
+            life--;
         }
     }
     
