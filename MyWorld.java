@@ -20,6 +20,5 @@ public class MyWorld extends World
         Sonic sonic = new Sonic();
         addObject(sonic, 300, 300);
         Ground ground = new Ground();
-        //addObject(ground, 300, 380);
     }
 }

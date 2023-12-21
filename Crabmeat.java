@@ -12,14 +12,27 @@ public class Crabmeat extends Monsters
      * Act - do whatever the Crabmeat wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    GifImage image = new GifImage("images/crabmeat.gif");
+    GreenfootImage[] crabs = new GreenfootImage[3];
+    GreenfootImage crab = new GreenfootImage("images/enemy/crabmeat/tile0.png"); 
+    SimpleTimer timer = new SimpleTimer();
     public Crabmeat(){
         super("crabmeat");
-        setImage(image.getCurrentImage());
+        setImage(crab);
+        for(int i = 0; i < crabs.length; i++){
+            crabs[i] = new GreenfootImage("images/enemy/crabmeat/tile" + i + ".png");
+        }
+    }
+    private int index = 0;
+    public void animation(){
+        if(timer.millisElapsed() < 150) return;
+        timer.mark();
+        setImage(crabs[index]);
+        index = (index + 1) % crabs.length;
     }
     
     public void act()
     {
         // Add your action code here.
+        animation();
     }
 }

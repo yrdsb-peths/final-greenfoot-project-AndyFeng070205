@@ -15,18 +15,26 @@ public class Sonic extends Actor
     private int life = 3;
     public boolean right = true;
     SimpleTimer timer = new SimpleTimer();
+    public boolean canTakeDamage = true;
     GreenfootImage SonicStart = new GreenfootImage("images/Sonic_walk/sonic_0.png");
     GreenfootImage SonicStopLeft = new GreenfootImage("images/sonicLeft.png");
+    GreenfootImage SonicPrepare = new GreenfootImage("images/sonicPrepare/waiting0.png");
     GreenfootImage[] sonicWalkRight = new GreenfootImage[8];
     GreenfootImage[] sonicWalkLeft = new GreenfootImage[8];
     GreenfootImage[] sonicSprintRight = new GreenfootImage[4];
     GreenfootImage[] sonicSprintLeft = new GreenfootImage[4];
     GreenfootImage[] sonicJumpRight = new GreenfootImage[4];
     GreenfootImage[] sonicJumpLeft = new GreenfootImage[4];
+    GreenfootImage[] sonicPrepare = new GreenfootImage[17];
+    private boolean isWaiting = false;
     
     public Sonic(){
         setImage(SonicStart);
         SonicStart.scale(70, 70);
+        for(int i = 0; i < sonicPrepare.length; i++){
+            sonicPrepare[i] = new GreenfootImage("images/sonicPrepare/waiting" + i + ".png");
+            sonicPrepare[i].scale(65, 65);
+        }
         for(int i = 0; i < sonicWalkRight.length; i++){
             sonicWalkRight[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
             sonicWalkRight[i].scale(70, 70);
@@ -62,37 +70,47 @@ public class Sonic extends Actor
     private int indexSL = 0;
     private int indexJumpRight = 0;
     private int indexJumpLeft = 0;
+    private int waitingIndex = 0;
+    private int restTime = 120;
     public void animation(){
-        if(timer.millisElapsed() < 95) return; 
-        timer.mark();
-        if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
-            if(right){
+        if(isWaiting){
+            if(timer.millisElapsed() < 220) return;
+            timer.mark();
+            setImage(sonicPrepare[waitingIndex]);
+            waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
+        }
+        else{
+            if(timer.millisElapsed() < 95) return; 
+            timer.mark();
+            if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
+                if(right){
                     setImage(sonicWalkRight[indexRight]);
                     indexRight = (indexRight + 1) % sonicWalkRight.length;
+                }
+                else{
+                    setImage(sonicWalkLeft[indexLeft]);
+                    indexLeft = (indexLeft + 1) % sonicWalkLeft.length;
+                }
             }
-            else{
-                setImage(sonicWalkLeft[indexLeft]);
-                indexLeft = (indexLeft + 1) % sonicWalkLeft.length;
+            if(Greenfoot.isKeyDown("shift")){
+                if(right){
+                    setImage(sonicSprintRight[indexSR]);
+                    indexSR = (indexSR + 1) % sonicSprintRight.length;
+                }
+                else{
+                    setImage(sonicSprintLeft[indexSL]);
+                    indexSL = (indexSL + 1) % sonicSprintLeft.length;
+                }
             }
-        }
-        if(Greenfoot.isKeyDown("shift")){
-            if(right){
-                setImage(sonicSprintRight[indexSR]);
-                indexSR = (indexSR + 1) % sonicSprintRight.length;
-            }
-            else{
-                setImage(sonicSprintLeft[indexSL]);
-                indexSL = (indexSL + 1) % sonicSprintLeft.length;
-            }
-        }
-        if(getY() < 300){
-            if(right){
-                setImage(sonicJumpRight[indexJumpRight]);
-                indexJumpRight = (indexJumpRight + 1) % sonicJumpRight.length;
-            }
-            else{
-                setImage(sonicJumpLeft[indexJumpLeft]);
-                indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
+            if(getY() < 300){
+                if(right){
+                    setImage(sonicJumpRight[indexJumpRight]);
+                    indexJumpRight = (indexJumpRight + 1) % sonicJumpRight.length;
+                }
+                else{
+                    setImage(sonicJumpLeft[indexJumpLeft]);
+                    indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
+                }
             }
         }
     }
@@ -117,12 +135,26 @@ public class Sonic extends Actor
             if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
             else setLocation(getX() - 1, getY() - upwardsVelocity);
             onGround = false;
-            upwardsVelocity-=gravity;
+            upwardsVelocity -= gravity;
         }
     }
-
     
-    public void move(){    
+    private int afkTime = 120;
+    public void afk(){
+        if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("w"))){
+            if(afkTime <= 0) isWaiting = true;
+            else afkTime--;
+        }
+        else{
+            isWaiting = false;
+            afkTime = 120;
+        }
+    }
+    
+    public void move(){
+        if(isWaiting){
+            return;
+        }
         if(Greenfoot.isKeyDown("d")){
             move(5);
             right = true;
@@ -148,8 +180,11 @@ public class Sonic extends Actor
     }
     
     public void damage(){
-        if(isTouching(Monsters.class)){
+        if(life > 0){
             life--;
+        }
+        else{
+            Greenfoot.setWorld(new titleWorld());
         }
     }
     
@@ -158,6 +193,8 @@ public class Sonic extends Actor
         // Add your action code here.
         move();
         animation();
-        jump();
+        if(isWaiting == false) jump();
+        if(isTouching(Monsters.class)) damage();
+        afk();
     }
 }

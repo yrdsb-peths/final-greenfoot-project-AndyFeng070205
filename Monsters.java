@@ -18,7 +18,11 @@ public class Monsters extends Actor
         type = name;
     }
     
-    
+    public void getRecked(){
+        if(type != "bomb"){
+            
+        }
+    }
     
     public void act()
     {
