@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.lang.Math;
 /**
  * Write a description of class Monsters here.
  * 
@@ -18,15 +18,20 @@ public class Monsters extends Actor
         type = name;
     }
     
-    public void getRecked(){
-        if(type != "bomb"){
-            
+    public void getRecked() {
+        Actor sonic = getOneIntersectingObject(Sonic.class);
+        if (sonic != null) {
+            if (isTouching(Sonic.class)) {
+                // Check if Sonic is touching the monster
+                getWorld().removeObject(this);
+            }
         }
     }
+
     
     public void act()
     {
         // Add your action code here.
-        
+        getRecked();
     }
 }

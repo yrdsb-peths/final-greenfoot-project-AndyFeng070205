@@ -21,15 +21,21 @@ public class Bomb2 extends Bomb
     GreenfootImage bomb2start = new GreenfootImage("images/enemy/Bomb/bomb2/bomb0.png");
     public Bomb2(){
         super("Bomb2");
-        for(int i = 0; i < rangeBombLeft.length / 2; i++){
+        setImage(bomb2start);
+        bomb2start.scale(70, 100);
+        for(int i = 0; i < rangeBombLeft.length; i++){
             rangeBombLeft[i] = new GreenfootImage("images/enemy/Bomb/bomb2/bomb" + i + ".png");
-            rangeBombLeft[i].scale(70, 85);
+            rangeBombLeft[i].scale(70, 100);
         }
         for(int i = 0; i < rangeBombRight.length; i++){
             rangeBombRight[i] = new GreenfootImage("images/enemy/Bomb/bomb2/bomb" + i + ".png");
             rangeBombRight[i].mirrorHorizontally();
-            rangeBombRight[i].scale(70, 85);
+            rangeBombRight[i].scale(70, 100);
         }
+    }
+    
+    public boolean sonicInRange(){
+        return getObjectsInRange(10000, Sonic.class) != null;
     }
     
     private int moveRight = 0;
@@ -37,41 +43,34 @@ public class Bomb2 extends Bomb
     private int moveLeftTimes = 0;
     private int moveRightTimes = 0;
     public void animation(){
-        List<Sonic> sonic = getIntersectingObjects(Sonic.class);
-        if(sonic.isEmpty()){
-            if(timer.millisElapsed() < 220) return;
-            timer.mark();
-            if(right){
-                setImage(rangeBombRight[moveRight]);
-                moveRight = (moveRight + 1) % rangeBombRight.length;
-                if(moveRightTimes == 5){
-                    right = false;
-                    moveRightTimes = 0;
-                }
-                else{
-                    moveRightTimes++;
-                    move(5);
-                }
+        if(timer.millisElapsed() < 220) return;
+        timer.mark();
+        if(right == true){
+            if(moveRightTimes == 8){
+                right = false;
+                moveRightTimes = 0;
             }
-            else{
-                setImage(rangeBombLeft[moveLeft]);
-                moveLeft = (moveLeft + 1) % rangeBombLeft.length;
-                if(moveLeftTimes == 5){
-                    right = true;
-                    moveLeftTimes = 0;
-                }
-                else{
-                    moveLeftTimes++;
-                    move(-5);
-                }
-            }
+            move(5);
+            moveRightTimes++;
+            setImage(rangeBombRight[moveRight]);
+            moveRight = (moveRight + 1) % rangeBombRight.length;
         }
-        else super.explodeWhenTouch();
+        else{
+            if(moveLeftTimes == 8){
+                right = true;
+                moveLeftTimes = 0;
+            }
+            move(-5);
+            moveLeftTimes++;
+            setImage(rangeBombLeft[moveLeft]);
+            moveLeft = (moveLeft + 1) % rangeBombLeft.length;
+        }
     }
     
     public void act()
     {
         // Add your action code here.
         animation();
+        if(sonicInRange()) super.explosion();
     }
 }

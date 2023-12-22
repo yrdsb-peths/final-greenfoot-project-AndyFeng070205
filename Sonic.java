@@ -6,16 +6,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Sonic extends Actor
+public class Sonic extends SmoothMover
 {
-    /**
-     * Act - do whatever the Sonic wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    private int life = 3;
+/**
+ * Write a description of class Sonic here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+    private static int life = 3;
     public boolean right = true;
     SimpleTimer timer = new SimpleTimer();
-    public boolean canTakeDamage = true;
+    public boolean takeDamage;
     GreenfootImage SonicStart = new GreenfootImage("images/Sonic_walk/sonic_0.png");
     GreenfootImage SonicStopLeft = new GreenfootImage("images/sonicLeft.png");
     GreenfootImage SonicPrepare = new GreenfootImage("images/sonicPrepare/waiting0.png");
@@ -26,6 +28,7 @@ public class Sonic extends Actor
     GreenfootImage[] sonicJumpRight = new GreenfootImage[4];
     GreenfootImage[] sonicJumpLeft = new GreenfootImage[4];
     GreenfootImage[] sonicPrepare = new GreenfootImage[17];
+    GreenfootImage sonicInjured = new GreenfootImage("images/tile000.png");
     private boolean isWaiting = false;
     
     public Sonic(){
@@ -62,6 +65,7 @@ public class Sonic extends Actor
             sonicJumpLeft[i].mirrorHorizontally();
             sonicJumpLeft[i].scale(60, 60);
         }
+        takeDamage = false;
     }
     
     private int indexRight = 0;
@@ -78,6 +82,20 @@ public class Sonic extends Actor
             timer.mark();
             setImage(sonicPrepare[waitingIndex]);
             waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
+        }
+        else if(takeDamage){
+            if(upwardsVelocity >= 1){
+                setImage(up);
+                up.scale(85, 85);
+            }
+            if(upwardsVelocity < 1 && upwardsVelocity > -10){
+                setImage(surprise);
+                surprise.scale(80, 80);
+            }
+            if(upwardsVelocity <= -10){
+                setImage(fall);
+                fall.scale(70, 70);
+            }
         }
         else{
             if(timer.millisElapsed() < 95) return; 
@@ -114,6 +132,38 @@ public class Sonic extends Actor
             }
         }
     }
+    
+    public void touchCheck() {
+        Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
+        if (monster != null) {
+            double sonicTop = getY() - getImage().getHeight() / 2;
+            double sonicBottom = getY() + getImage().getHeight() / 2; 
+            double monsterTop = monster.getY() - monster.getImage().getHeight() / 2; 
+            double monsterBottom = monster.getY() + monster.getImage().getHeight() / 2; 
+    
+            double sonicRight = getX() + getImage().getWidth() / 2; 
+            double sonicLeft = getX() - getImage().getWidth() / 2; 
+            double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
+            double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
+    
+            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom;
+            boolean isTouchingSide = (sonicRight >= monsterLeft && sonicRight <= monsterRight) || (sonicLeft <= monsterRight && sonicLeft >= monsterLeft);
+            
+            if (isTouchingTop) {
+                takeDamage = false; 
+            } else if (isTouchingSide && isTouchingTop) {
+                takeDamage = true;
+            } else if(isTouchingSide) {
+                takeDamage = true;
+            } else {
+                takeDamage = false;
+            }
+        } else {
+            takeDamage = false;
+        }
+    }
+
+
     
     private int gravity = 1;
     private boolean onGround = false;
@@ -179,22 +229,36 @@ public class Sonic extends Actor
         }
     }
     
+    GreenfootImage up = new GreenfootImage("images/fall/fall0.png");
+    GreenfootImage surprise = new GreenfootImage("images/fall/fall1.png");
+    GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");
+    private int pushBack = 20;
     public void damage(){
-        if(life > 0){
-            life--;
+        Actor monster = getOneIntersectingObject(Monsters.class);
+        if(isTouching(Explosion.class)) takeDamage = true;
+        if(monster != null){
+            if(isTouching(Monsters.class)){
+                touchCheck();
+                if(getY() < 300){
+                    setLocation(getX(), getY() - upwardsVelocity);
+                    upwardsVelocity -= gravity;
+                }
+                upwardsVelocity = pushBack;
+                setLocation(getX(), getY() - upwardsVelocity);
+                onGround = false;
+                upwardsVelocity -= gravity;
+            }
         }
-        else{
-            Greenfoot.setWorld(new titleWorld());
-        }
+        if(getY() >= 300) takeDamage = false;
     }
     
     public void act()
     {
         // Add your action code here.
-        move();
         animation();
-        if(isWaiting == false) jump();
-        if(isTouching(Monsters.class)) damage();
+        move();
+        jump();
+        damage();
         afk();
     }
 }

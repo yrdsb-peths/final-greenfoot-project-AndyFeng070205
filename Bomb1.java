@@ -20,6 +20,7 @@ public class Bomb1 extends Bomb
     GreenfootImage[] bomb1Left = new GreenfootImage[5];
     GreenfootImage[] bomb1Right = new GreenfootImage[5];
     GreenfootImage image = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb0.png");
+    private boolean explode = false;
     public Bomb1(){
         super("Bomb1");
         setImage(image);
@@ -35,38 +36,36 @@ public class Bomb1 extends Bomb
         }
     }
     
+    public boolean activate(){
+        return getOneIntersectingObject(Sonic.class) != null;
+    }
+    
     private int moveRightIndex = 0;
     private int moveLeftIndex = 0;
     private int moveLeftTime = 0;
     private int moveRightTime = 0;
     public void animation(){
-        List<Sonic> sonic = getIntersectingObjects(Sonic.class);
-        if(sonic.isEmpty()){
-            if(timer.millisElapsed() < 220) return;
-            timer.mark();
-            if(right == true){
-                if(moveRightTime == 5){
-                    right = false;
-                    moveRightTime = 0;
-                }
-                move(5);
-                moveRightTime++;
-                setImage(bomb1Right[moveRightIndex]);
-                moveRightIndex = (moveRightIndex + 1) % bomb1Right.length;
+        if(timer.millisElapsed() < 220) return;
+        timer.mark();
+        if(right == true){
+            if(moveRightTime == 8){
+                right = false;
+                moveRightTime = 0;
             }
-            if(right == false){
-                if(moveLeftTime == 5){
-                    right = true;
-                    moveLeftTime = 0;
-                }
-                move(-5);
-                moveLeftTime++;
-                setImage(bomb1Left[moveLeftIndex]);
-                moveLeftIndex = (moveLeftIndex + 1) % bomb1Left.length;
-            }
+            move(5);
+            moveRightTime++;
+            setImage(bomb1Right[moveRightIndex]);
+            moveRightIndex = (moveRightIndex + 1) % bomb1Right.length;
         }
-        else{
-            super.explodeWhenTouch();   
+        if(right == false){
+            if(moveLeftTime == 8){
+                right = true;
+                moveLeftTime = 0;
+            }
+            move(-5);
+            moveLeftTime++;
+            setImage(bomb1Left[moveLeftIndex]);
+            moveLeftIndex = (moveLeftIndex + 1) % bomb1Left.length;
         }
     }
     
@@ -74,5 +73,6 @@ public class Bomb1 extends Bomb
     {
         // Add your action code here.
         animation();
+        super.explosion();
     }
 }
