@@ -36,10 +36,6 @@ public class Bomb1 extends Bomb
         }
     }
     
-    public boolean activate(){
-        return getOneIntersectingObject(Sonic.class) != null;
-    }
-    
     private int moveRightIndex = 0;
     private int moveLeftIndex = 0;
     private int moveLeftTime = 0;
@@ -73,6 +69,6 @@ public class Bomb1 extends Bomb
     {
         // Add your action code here.
         animation();
-        super.explosion();
+        if(isTouching(Sonic.class)) super.explosion();
     }
 }

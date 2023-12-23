@@ -34,8 +34,9 @@ public class Bomb2 extends Bomb
         }
     }
     
-    public boolean sonicInRange(){
-        return getObjectsInRange(10000, Sonic.class) != null;
+    public boolean sonicInRange() {
+        List<Sonic> inRange = getObjectsInRange(100, Sonic.class);
+        return !inRange.isEmpty();
     }
     
     private int moveRight = 0;
@@ -71,6 +72,6 @@ public class Bomb2 extends Bomb
     {
         // Add your action code here.
         animation();
-        if(sonicInRange()) super.explosion();
+        if(sonicInRange() == true) super.explosion();
     }
 }

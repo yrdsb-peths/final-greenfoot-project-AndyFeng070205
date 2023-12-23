@@ -21,6 +21,7 @@ public class Sonic extends SmoothMover
     GreenfootImage SonicStart = new GreenfootImage("images/Sonic_walk/sonic_0.png");
     GreenfootImage SonicStopLeft = new GreenfootImage("images/sonicLeft.png");
     GreenfootImage SonicPrepare = new GreenfootImage("images/sonicPrepare/waiting0.png");
+    GreenfootImage SonicRecover = new GreenfootImage("images/Sonicrecovering/sonicRecover0.png");
     GreenfootImage[] sonicWalkRight = new GreenfootImage[8];
     GreenfootImage[] sonicWalkLeft = new GreenfootImage[8];
     GreenfootImage[] sonicSprintRight = new GreenfootImage[4];
@@ -28,42 +29,45 @@ public class Sonic extends SmoothMover
     GreenfootImage[] sonicJumpRight = new GreenfootImage[4];
     GreenfootImage[] sonicJumpLeft = new GreenfootImage[4];
     GreenfootImage[] sonicPrepare = new GreenfootImage[17];
+    GreenfootImage[] sonicRecovering = new GreenfootImage[4];
     GreenfootImage sonicInjured = new GreenfootImage("images/tile000.png");
     private boolean isWaiting = false;
     
     public Sonic(){
-        setImage(SonicStart);
-        SonicStart.scale(70, 70);
         for(int i = 0; i < sonicPrepare.length; i++){
             sonicPrepare[i] = new GreenfootImage("images/sonicPrepare/waiting" + i + ".png");
             sonicPrepare[i].scale(65, 65);
         }
         for(int i = 0; i < sonicWalkRight.length; i++){
             sonicWalkRight[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
-            sonicWalkRight[i].scale(70, 70);
+            sonicWalkRight[i].scale(65, 65);
         }
         for(int i = 0; i < sonicWalkLeft.length; i++){
             sonicWalkLeft[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
             sonicWalkLeft[i].mirrorHorizontally();
-            sonicWalkLeft[i].scale(70, 70);
+            sonicWalkLeft[i].scale(65, 65);
         }
         for(int i = 0; i < sonicSprintRight.length; i++){
             sonicSprintRight[i] = new GreenfootImage("images/Sonic_sprint/sonic_" + i + ".png");
-            sonicSprintRight[i].scale(70, 70);
+            sonicSprintRight[i].scale(65, 65);
         }
         for(int i = 0; i < sonicSprintLeft.length; i++){
             sonicSprintLeft[i] = new GreenfootImage("images/Sonic_sprint/sonic_" + i + ".png");
             sonicSprintLeft[i].mirrorHorizontally(); 
-            sonicSprintLeft[i].scale(70, 70);
+            sonicSprintLeft[i].scale(65, 65);
         }
         for(int i = 0; i < sonicJumpRight.length; i++){
             sonicJumpRight[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
-            sonicJumpRight[i].scale(60, 60);
+            sonicJumpRight[i].scale(65, 65);
         }
         for(int i = 0; i < sonicJumpLeft.length; i++){
             sonicJumpLeft[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
             sonicJumpLeft[i].mirrorHorizontally();
-            sonicJumpLeft[i].scale(60, 60);
+            sonicJumpLeft[i].scale(65, 65);
+        }
+        for(int i = 0; i < sonicRecovering.length; i++){
+            sonicRecovering[i] = new GreenfootImage("images/sonicRecovering/sonicRecover" + i + ".png");
+            sonicRecovering[i].scale(65, 65);
         }
         takeDamage = false;
     }
@@ -75,15 +79,15 @@ public class Sonic extends SmoothMover
     private int indexJumpRight = 0;
     private int indexJumpLeft = 0;
     private int waitingIndex = 0;
-    private int restTime = 120;
+    private int recoverFrame = 0;
     public void animation(){
-        if(isWaiting){
+        if(isWaiting && !takeDamage){
             if(timer.millisElapsed() < 220) return;
             timer.mark();
             setImage(sonicPrepare[waitingIndex]);
             waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
         }
-        else if(takeDamage){
+        else if(takeDamage && getY() < 300){
             if(upwardsVelocity >= 1){
                 setImage(up);
                 up.scale(85, 85);
@@ -95,6 +99,19 @@ public class Sonic extends SmoothMover
             if(upwardsVelocity <= -10){
                 setImage(fall);
                 fall.scale(70, 70);
+            }
+        }
+        else if(takeDamage && getY() >= 300){
+            if(timer.millisElapsed() < 500) return;
+            timer.mark();
+            if(recoverFrame >= sonicRecovering.length){
+                recoverFrame = 0;
+                takeDamage = false;
+                isWaiting = false;
+            }
+            else{
+                setImage(sonicRecovering[recoverFrame]);
+                recoverFrame++;
             }
         }
         else{
@@ -148,12 +165,15 @@ public class Sonic extends SmoothMover
     
             boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom;
             boolean isTouchingSide = (sonicRight >= monsterLeft && sonicRight <= monsterRight) || (sonicLeft <= monsterRight && sonicLeft >= monsterLeft);
+            boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
             
             if (isTouchingTop) {
                 takeDamage = false; 
-            } else if (isTouchingSide && isTouchingTop) {
+            } else if(isTouchingSide && isTouchingTop) {
                 takeDamage = true;
             } else if(isTouchingSide) {
+                takeDamage = true;
+            } else if(isTouchingBottom) {
                 takeDamage = true;
             } else {
                 takeDamage = false;
@@ -162,15 +182,13 @@ public class Sonic extends SmoothMover
             takeDamage = false;
         }
     }
-
-
     
     private int gravity = 1;
-    private boolean onGround = false;
+    public boolean onGround = false;
     private int jumpForce = 20;
     private int upwardsVelocity = 0;
     public void jump(){
-        if(getY() >= 300){
+        if(getY() >= 300 && takeDamage == false){
             onGround = true;
             setLocation(getX(), 300);
             upwardsVelocity = 0;
@@ -232,11 +250,12 @@ public class Sonic extends SmoothMover
     GreenfootImage up = new GreenfootImage("images/fall/fall0.png");
     GreenfootImage surprise = new GreenfootImage("images/fall/fall1.png");
     GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");
-    private int pushBack = 20;
+    private int pushBack;
     public void damage(){
         Actor monster = getOneIntersectingObject(Monsters.class);
-        if(isTouching(Explosion.class)) takeDamage = true;
-        if(monster != null){
+        Explosion explosion = (Explosion) getOneIntersectingObject(Explosion.class);
+        if(monster != null && !(monster instanceof Bomb)){
+            pushBack = 20;
             if(isTouching(Monsters.class)){
                 touchCheck();
                 if(getY() < 300){
@@ -249,14 +268,37 @@ public class Sonic extends SmoothMover
                 upwardsVelocity -= gravity;
             }
         }
-        if(getY() >= 300) takeDamage = false;
+        else if(monster instanceof Bomb){
+            takeDamage = true;
+            pushBack = 14;
+            if(getY() < 300){
+                setLocation(getX(), getY() - upwardsVelocity);
+                upwardsVelocity -= gravity;
+            }
+            upwardsVelocity = pushBack;
+            setLocation(getX(), getY() - upwardsVelocity);
+            onGround = false;
+            upwardsVelocity -= gravity;
+        }
+        else if(monster == null && explosion != null){
+            takeDamage = true;
+            pushBack = 14;
+            if(getY() < 300){
+                setLocation(getX(), getY() - upwardsVelocity);
+                upwardsVelocity -= gravity;
+            }
+            upwardsVelocity = pushBack;
+            setLocation(getX(), getY() - upwardsVelocity);
+            onGround = false;
+            upwardsVelocity -= gravity;
+        }
     }
     
     public void act()
     {
         // Add your action code here.
         animation();
-        move();
+        if(takeDamage == false) move();
         jump();
         damage();
         afk();

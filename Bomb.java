@@ -1,5 +1,4 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.List;
 
 /**
  * Write a description of class Bomb here.
@@ -22,10 +21,8 @@ public class Bomb extends Monsters {
     }
     
     public void explosion(){
-        if(isTouching(Sonic.class)){
-            getWorld().addObject(new Explosion(), getX(), getY() - 30);
-            getWorld().removeObject(this);
-        }
+        getWorld().addObject(new Explosion(), getX(), getY() - 30);
+        getWorld().removeObject(this);
     }
     
     public void act() {

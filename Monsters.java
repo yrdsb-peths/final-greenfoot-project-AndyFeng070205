@@ -19,12 +19,8 @@ public class Monsters extends Actor
     }
     
     public void getRecked() {
-        Actor sonic = getOneIntersectingObject(Sonic.class);
-        if (sonic != null) {
-            if (isTouching(Sonic.class)) {
-                // Check if Sonic is touching the monster
-                getWorld().removeObject(this);
-            }
+        if (isTouching(Sonic.class)) {
+            getWorld().removeObject(this);
         }
     }
 
@@ -32,6 +28,6 @@ public class Monsters extends Actor
     public void act()
     {
         // Add your action code here.
-        getRecked();
+        //getRecked();
     }
 }
