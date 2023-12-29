@@ -21,17 +21,17 @@ public class Bomb2 extends Bomb
     GreenfootImage bomb2start = new GreenfootImage("images/enemy/Bomb/bomb2/bomb0.png");
     public Bomb2(){
         super("Bomb2");
-        setImage(bomb2start);
-        bomb2start.scale(70, 100);
         for(int i = 0; i < rangeBombLeft.length; i++){
             rangeBombLeft[i] = new GreenfootImage("images/enemy/Bomb/bomb2/bomb" + i + ".png");
-            rangeBombLeft[i].scale(70, 100);
+            rangeBombLeft[i].scale(45, 78);
         }
         for(int i = 0; i < rangeBombRight.length; i++){
             rangeBombRight[i] = new GreenfootImage("images/enemy/Bomb/bomb2/bomb" + i + ".png");
             rangeBombRight[i].mirrorHorizontally();
-            rangeBombRight[i].scale(70, 100);
+            rangeBombRight[i].scale(45, 78);
         }
+        rangeBombRight[4].scale(53, 78);
+        rangeBombLeft[4].scale(53, 78);
     }
     
     public boolean sonicInRange() {

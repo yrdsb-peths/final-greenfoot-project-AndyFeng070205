@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Write a description of class Sonic here.
  * 
@@ -30,44 +30,49 @@ public class Sonic extends SmoothMover
     GreenfootImage[] sonicJumpLeft = new GreenfootImage[4];
     GreenfootImage[] sonicPrepare = new GreenfootImage[17];
     GreenfootImage[] sonicRecovering = new GreenfootImage[4];
+    GreenfootImage[] sonicCraw = new GreenfootImage[4];
     GreenfootImage sonicInjured = new GreenfootImage("images/tile000.png");
     private boolean isWaiting = false;
     
     public Sonic(){
         for(int i = 0; i < sonicPrepare.length; i++){
             sonicPrepare[i] = new GreenfootImage("images/sonicPrepare/waiting" + i + ".png");
-            sonicPrepare[i].scale(65, 65);
+            sonicPrepare[i].scale(51, 61);
         }
         for(int i = 0; i < sonicWalkRight.length; i++){
             sonicWalkRight[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
-            sonicWalkRight[i].scale(65, 65);
+            sonicWalkRight[i].scale(52, 61);
         }
         for(int i = 0; i < sonicWalkLeft.length; i++){
             sonicWalkLeft[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
             sonicWalkLeft[i].mirrorHorizontally();
-            sonicWalkLeft[i].scale(65, 65);
+            sonicWalkLeft[i].scale(52, 61);
         }
         for(int i = 0; i < sonicSprintRight.length; i++){
             sonicSprintRight[i] = new GreenfootImage("images/Sonic_sprint/sonic_" + i + ".png");
-            sonicSprintRight[i].scale(65, 65);
+            sonicSprintRight[i].scale(50, 61);
         }
         for(int i = 0; i < sonicSprintLeft.length; i++){
             sonicSprintLeft[i] = new GreenfootImage("images/Sonic_sprint/sonic_" + i + ".png");
             sonicSprintLeft[i].mirrorHorizontally(); 
-            sonicSprintLeft[i].scale(65, 65);
+            sonicSprintLeft[i].scale(50, 61);
         }
         for(int i = 0; i < sonicJumpRight.length; i++){
             sonicJumpRight[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
-            sonicJumpRight[i].scale(65, 65);
+            sonicJumpRight[i].scale(51, 47);
         }
         for(int i = 0; i < sonicJumpLeft.length; i++){
             sonicJumpLeft[i] = new GreenfootImage("images/Sonic_jump/jump_" + i + ".png");
             sonicJumpLeft[i].mirrorHorizontally();
-            sonicJumpLeft[i].scale(65, 65);
+            sonicJumpLeft[i].scale(51, 47);
         }
         for(int i = 0; i < sonicRecovering.length; i++){
             sonicRecovering[i] = new GreenfootImage("images/sonicRecovering/sonicRecover" + i + ".png");
-            sonicRecovering[i].scale(65, 65);
+            sonicRecovering[i].scale(51, 47);
+        }
+        for(int i = 0; i < sonicCraw.length; i++){
+            sonicCraw[i] = new GreenfootImage("images/sonicCraw/tile" + i + ".png");
+            sonicCraw[i].scale(51, 47);
         }
         takeDamage = false;
     }
@@ -80,49 +85,45 @@ public class Sonic extends SmoothMover
     private int indexJumpLeft = 0;
     private int waitingIndex = 0;
     private int recoverFrame = 0;
+    private int crawFrame = 0;
     public void animation(){
         if(isWaiting && !takeDamage){
             if(timer.millisElapsed() < 220) return;
             timer.mark();
             setImage(sonicPrepare[waitingIndex]);
             waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
-        }
-        else if(takeDamage && getY() < 300){
+        } else if(takeDamage && getY() < 300) {
             if(upwardsVelocity >= 1){
                 setImage(up);
-                up.scale(85, 85);
+                up.scale(65, 70);
             }
             if(upwardsVelocity < 1 && upwardsVelocity > -10){
                 setImage(surprise);
-                surprise.scale(80, 80);
+                surprise.scale(67, 72);
             }
             if(upwardsVelocity <= -10){
                 setImage(fall);
-                fall.scale(70, 70);
+                fall.scale(50, 70);
             }
-        }
-        else if(takeDamage && getY() >= 300){
+        } else if(takeDamage && getY() >= 300) {
             if(timer.millisElapsed() < 500) return;
             timer.mark();
             if(recoverFrame >= sonicRecovering.length){
                 recoverFrame = 0;
                 takeDamage = false;
                 isWaiting = false;
-            }
-            else{
+            } else {
                 setImage(sonicRecovering[recoverFrame]);
                 recoverFrame++;
             }
-        }
-        else{
+        } else {
             if(timer.millisElapsed() < 95) return; 
             timer.mark();
             if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
                 if(right){
                     setImage(sonicWalkRight[indexRight]);
                     indexRight = (indexRight + 1) % sonicWalkRight.length;
-                }
-                else{
+                } else {
                     setImage(sonicWalkLeft[indexLeft]);
                     indexLeft = (indexLeft + 1) % sonicWalkLeft.length;
                 }
@@ -131,8 +132,7 @@ public class Sonic extends SmoothMover
                 if(right){
                     setImage(sonicSprintRight[indexSR]);
                     indexSR = (indexSR + 1) % sonicSprintRight.length;
-                }
-                else{
+                } else {
                     setImage(sonicSprintLeft[indexSL]);
                     indexSL = (indexSL + 1) % sonicSprintLeft.length;
                 }
@@ -141,8 +141,7 @@ public class Sonic extends SmoothMover
                 if(right){
                     setImage(sonicJumpRight[indexJumpRight]);
                     indexJumpRight = (indexJumpRight + 1) % sonicJumpRight.length;
-                }
-                else{
+                } else {
                     setImage(sonicJumpLeft[indexJumpLeft]);
                     indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
                 }
@@ -152,10 +151,13 @@ public class Sonic extends SmoothMover
     
     public void touchCheck() {
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
-        if (monster != null) {
+        if(monster instanceof buzzBomber){
+            takeDamage = false;
+            return;
+        } else if (monster != null) {
             double sonicTop = getY() - getImage().getHeight() / 2;
             double sonicBottom = getY() + getImage().getHeight() / 2; 
-            double monsterTop = monster.getY() - monster.getImage().getHeight() / 2; 
+            double monsterTop = monster.getY() - monster.getImage().getHeight() / 2 -  10; 
             double monsterBottom = monster.getY() + monster.getImage().getHeight() / 2; 
     
             double sonicRight = getX() + getImage().getWidth() / 2; 
@@ -168,12 +170,16 @@ public class Sonic extends SmoothMover
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
             
             if (isTouchingTop) {
+                isWaiting = false;
                 takeDamage = false; 
-            } else if(isTouchingSide && isTouchingTop) {
+            } else if(isTouchingTop && isTouchingSide) {
+                isWaiting = false;
                 takeDamage = true;
             } else if(isTouchingSide) {
+                isWaiting = false;
                 takeDamage = true;
             } else if(isTouchingBottom) {
+                isWaiting = false;
                 takeDamage = true;
             } else {
                 takeDamage = false;
@@ -238,11 +244,11 @@ public class Sonic extends SmoothMover
         if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || getY() < 300)){
             if(right){
                 setImage(SonicStart);
-                SonicStart.scale(70, 70);
+                SonicStart.scale(45, 59);
             }
             else{
                 setImage(SonicStopLeft);
-                SonicStopLeft.scale(70, 70);
+                SonicStopLeft.scale(47, 58);
             }
         }
     }
@@ -254,7 +260,7 @@ public class Sonic extends SmoothMover
     public void damage(){
         Actor monster = getOneIntersectingObject(Monsters.class);
         Explosion explosion = (Explosion) getOneIntersectingObject(Explosion.class);
-        if(monster != null && !(monster instanceof Bomb)){
+        if(monster != null && !(monster instanceof Bomb) && !(monster instanceof buzzBomber)){
             pushBack = 20;
             if(isTouching(Monsters.class)){
                 touchCheck();
@@ -267,8 +273,7 @@ public class Sonic extends SmoothMover
                 onGround = false;
                 upwardsVelocity -= gravity;
             }
-        }
-        else if(monster instanceof Bomb){
+        } else if(monster instanceof Bomb) {
             takeDamage = true;
             pushBack = 14;
             if(getY() < 300){
@@ -279,8 +284,19 @@ public class Sonic extends SmoothMover
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
-        }
-        else if(monster == null && explosion != null){
+        } else if(monster == null && explosion != null) {
+            takeDamage = true;
+            pushBack = 14;
+            if(getY() < 300){
+                setLocation(getX(), getY() - upwardsVelocity);
+                upwardsVelocity -= gravity;
+            }
+            upwardsVelocity = pushBack;
+            setLocation(getX(), getY() - upwardsVelocity);
+            onGround = false;
+            upwardsVelocity -= gravity;
+        } else if(monster instanceof buzzBomber) return;
+        if(isTouching(Bullet.class)) {
             takeDamage = true;
             pushBack = 14;
             if(getY() < 300){

@@ -20,7 +20,7 @@ public class Crabmeat extends Monsters
         setImage(crab);
         for(int i = 0; i < crabs.length; i++){
             crabs[i] = new GreenfootImage("images/enemy/crabmeat/tile" + i + ".png");
-            crabs[i].scale(84, 65);
+            crabs[i].scale(79, 60);
         }
     }
     private int index = 0;
@@ -35,6 +35,5 @@ public class Crabmeat extends Monsters
     {
         // Add your action code here.
         animation();
-        super.getRecked();
     }
 }

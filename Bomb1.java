@@ -23,17 +23,17 @@ public class Bomb1 extends Bomb
     private boolean explode = false;
     public Bomb1(){
         super("Bomb1");
-        setImage(image);
-        image.scale(70, 57);
         for(int i = 0; i < bomb1Left.length; i++){
             bomb1Left[i] = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb" + i + ".png");
-            bomb1Left[i].scale(70, 57);
+            bomb1Left[i].scale(46, 57);
         }
         for(int i = 0; i < bomb1Right.length; i++){
             bomb1Right[i] = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb" + i + ".png");
             bomb1Right[i].mirrorHorizontally();
-            bomb1Right[i].scale(70, 57);
+            bomb1Right[i].scale(46, 57);
         }
+        bomb1Left[4].scale(53, 57);
+        bomb1Right[4].scale(53, 57);
     }
     
     private int moveRightIndex = 0;
@@ -65,10 +65,16 @@ public class Bomb1 extends Bomb
         }
     }
     
+    public void explode(){
+        Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
+        if(sonic == null) return;
+        super.explosion();
+    }
+    
     public void act()
     {
         // Add your action code here.
         animation();
-        if(isTouching(Sonic.class)) super.explosion();
+        explode();
     }
 }

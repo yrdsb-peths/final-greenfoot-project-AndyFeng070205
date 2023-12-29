@@ -19,8 +19,5 @@ public class Ground extends Actor
     public void act()
     {
         // Add your action code here.
-        if(Greenfoot.isKeyDown("d")) move(-5);
-        if(Greenfoot.isKeyDown("a")) move(5);
-        //if(Greenfoot.isKeyDown(""))
     }
 }

@@ -21,7 +21,7 @@ public class Explosion extends SmoothMover
         explode.scale(200, 181);
         for(int i = 0; i < explosion.length; i++){
             explosion[i] = new GreenfootImage("images/explosion/explode" + i + ".png");
-            explosion[i].scale(250, 231);
+            explosion[i].scale(225, 180);
         }
     }
     

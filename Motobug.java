@@ -19,15 +19,13 @@ public class Motobug extends Monsters
     GreenfootImage motobug = new GreenfootImage("images/enemy/Motobug/moveLeft/left0.png");
     public Motobug(){
         super("motobug");
-        setImage(motobug);
-        motobug.scale(80, 65);
         for(int i = 0; i < motobugLeft.length; i++){
             motobugLeft[i] = new GreenfootImage("images/enemy/Motobug/moveLeft/left" + i + ".png");
-            motobugLeft[i].scale(80, 65);
+            motobugLeft[i].scale(77, 55);
         }
         for(int i = 0; i < motobugRight.length; i++){
             motobugRight[i] = new GreenfootImage("images/enemy/Motobug/moveRight/right" + i + ".png");
-            motobugRight[i].scale(80, 65);
+            motobugRight[i].scale(77, 55);
         }
     }
     
@@ -76,10 +74,6 @@ public class Motobug extends Monsters
                 if(right) move(7);
                 else move(-7);
             }
-            if(isTouching(Sonic.class)){
-                nearestSonic.damage();
-                super.getRecked();
-            }
         }
     }
     
@@ -88,5 +82,7 @@ public class Motobug extends Monsters
         // Add your action code here.
         animation();
         attackSonic();
+        //System.out.println("Motobug height:" + getImage().getHeight());
+        //System.out.println("Motobug width:" + getImage().getWidth());
     }
 }

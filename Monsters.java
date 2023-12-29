@@ -18,16 +18,9 @@ public class Monsters extends Actor
         type = name;
     }
     
-    public void getRecked() {
-        if (isTouching(Sonic.class)) {
-            getWorld().removeObject(this);
-        }
-    }
-
-    
     public void act()
     {
         // Add your action code here.
-        //getRecked();
+        
     }
 }
