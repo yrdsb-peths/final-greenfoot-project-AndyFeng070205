@@ -62,5 +62,6 @@ public class titleWorld extends World
         label.setLocation(396,361);
         label.setLocation(396,363);
         label.setLocation(392,351);
+        label2.setLocation(193,352);
     }
 }

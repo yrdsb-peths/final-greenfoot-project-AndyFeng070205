@@ -74,6 +74,10 @@ public class Motobug extends Monsters
                 if(right) move(7);
                 else move(-7);
             }
+            if(isTouching(Sonic.class)){
+                nearestSonic.damage();
+                //getWorld().removeObject(this);
+            }
         }
     }
     
@@ -82,7 +86,6 @@ public class Motobug extends Monsters
         // Add your action code here.
         animation();
         attackSonic();
-        //System.out.println("Motobug height:" + getImage().getHeight());
-        //System.out.println("Motobug width:" + getImage().getWidth());
+        super.getRecked();
     }
 }

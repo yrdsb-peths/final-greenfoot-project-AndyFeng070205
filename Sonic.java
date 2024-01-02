@@ -30,8 +30,7 @@ public class Sonic extends SmoothMover
     GreenfootImage[] sonicJumpLeft = new GreenfootImage[4];
     GreenfootImage[] sonicPrepare = new GreenfootImage[17];
     GreenfootImage[] sonicRecovering = new GreenfootImage[4];
-    GreenfootImage[] sonicCraw = new GreenfootImage[4];
-    GreenfootImage sonicInjured = new GreenfootImage("images/tile000.png");
+    GreenfootImage[] sonicCrawl = new GreenfootImage[4];
     private boolean isWaiting = false;
     
     public Sonic(){
@@ -70,9 +69,9 @@ public class Sonic extends SmoothMover
             sonicRecovering[i] = new GreenfootImage("images/sonicRecovering/sonicRecover" + i + ".png");
             sonicRecovering[i].scale(51, 47);
         }
-        for(int i = 0; i < sonicCraw.length; i++){
-            sonicCraw[i] = new GreenfootImage("images/sonicCraw/tile" + i + ".png");
-            sonicCraw[i].scale(51, 47);
+        for(int i = 0; i < sonicCrawl.length; i++){
+            sonicCrawl[i] = new GreenfootImage("images/sonicCrawl/tile" + i + ".png");
+            sonicCrawl[i].scale(51, 47);
         }
         takeDamage = false;
     }
@@ -85,8 +84,8 @@ public class Sonic extends SmoothMover
     private int indexJumpLeft = 0;
     private int waitingIndex = 0;
     private int recoverFrame = 0;
-    private int crawFrame = 0;
-    public void animation(){
+    private int crawlFrame = 0;
+    private void animation(){
         if(isWaiting && !takeDamage){
             if(timer.millisElapsed() < 220) return;
             timer.mark();
@@ -146,18 +145,25 @@ public class Sonic extends SmoothMover
                     indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
                 }
             }
+            if(Greenfoot.isKeyDown("s")){
+                setImage(sonicCrawl[crawlFrame]);
+                crawlFrame = (crawlFrame + 1) % sonicCrawl.length;
+            }
         }
     }
     
-    public void touchCheck() {
+    private void touchCheck() {
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
-        if(monster instanceof buzzBomber){
+        if(monster != null &&monster instanceof buzzBomber){
             takeDamage = false;
+            return;
+        } else if(monster != null && monster instanceof Masher){
+            takeDamage = true;
             return;
         } else if (monster != null) {
             double sonicTop = getY() - getImage().getHeight() / 2;
             double sonicBottom = getY() + getImage().getHeight() / 2; 
-            double monsterTop = monster.getY() - monster.getImage().getHeight() / 2 -  10; 
+            double monsterTop = monster.getY() - monster.getImage().getHeight() / 2; 
             double monsterBottom = monster.getY() + monster.getImage().getHeight() / 2; 
     
             double sonicRight = getX() + getImage().getWidth() / 2; 
@@ -165,27 +171,32 @@ public class Sonic extends SmoothMover
             double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
     
-            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom;
+            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom && getX() > monsterLeft - 10 && getX() < monsterRight + 10;
             boolean isTouchingSide = (sonicRight >= monsterLeft && sonicRight <= monsterRight) || (sonicLeft <= monsterRight && sonicLeft >= monsterLeft);
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
-            
             if (isTouchingTop) {
                 isWaiting = false;
-                takeDamage = false; 
-            } else if(isTouchingTop && isTouchingSide) {
-                isWaiting = false;
-                takeDamage = true;
-            } else if(isTouchingSide) {
-                isWaiting = false;
-                takeDamage = true;
-            } else if(isTouchingBottom) {
-                isWaiting = false;
-                takeDamage = true;
-            } else {
                 takeDamage = false;
+                return;
+            }
+            if(isTouchingTop && isTouchingSide) {
+                isWaiting = false;
+                takeDamage = true;
+                return;
+            }
+            if(isTouchingSide) {
+                isWaiting = false;
+                takeDamage = true;
+                return;
+            }
+            if(isTouchingBottom) {
+                isWaiting = false;
+                takeDamage = true;
+                return;
             }
         } else {
             takeDamage = false;
+            return;
         }
     }
     
@@ -193,18 +204,23 @@ public class Sonic extends SmoothMover
     public boolean onGround = false;
     private int jumpForce = 20;
     private int upwardsVelocity = 0;
-    public void jump(){
-        if(getY() >= 300 && takeDamage == false){
+    private void jump(){
+        if(getY() >= 300){
             onGround = true;
             setLocation(getX(), 300);
             upwardsVelocity = 0;
         }
         if(getY() < 300){
             upwardsVelocity -= gravity;
+            if(takeDamage){
+                setLocation(getX() - 2, getY() - upwardsVelocity);
+                return;
+            }
             if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
             else setLocation(getX() - 1, getY() - upwardsVelocity);
         }
         if(Greenfoot.isKeyDown("w") && onGround){
+            if(takeDamage) return;
             upwardsVelocity += jumpForce;
             if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
             else setLocation(getX() - 1, getY() - upwardsVelocity);
@@ -214,7 +230,7 @@ public class Sonic extends SmoothMover
     }
     
     private int afkTime = 120;
-    public void afk(){
+    private void afk(){
         if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("w"))){
             if(afkTime <= 0) isWaiting = true;
             else afkTime--;
@@ -225,7 +241,7 @@ public class Sonic extends SmoothMover
         }
     }
     
-    public void move(){
+    private void move(){
         if(isWaiting){
             return;
         }
@@ -241,7 +257,11 @@ public class Sonic extends SmoothMover
             if(right) move(7);
             else move(-7);
         }
-        if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || getY() < 300)){
+        if(Greenfoot.isKeyDown("s")){
+            if(right) move(4);
+            else move(-4);
+        }
+        if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("s") || getY() < 300)){
             if(right){
                 setImage(SonicStart);
                 SonicStart.scale(45, 59);
@@ -256,53 +276,33 @@ public class Sonic extends SmoothMover
     GreenfootImage up = new GreenfootImage("images/fall/fall0.png");
     GreenfootImage surprise = new GreenfootImage("images/fall/fall1.png");
     GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");
-    private int pushBack;
+    private int pushBack = 14;
     public void damage(){
         Actor monster = getOneIntersectingObject(Monsters.class);
         Explosion explosion = (Explosion) getOneIntersectingObject(Explosion.class);
         if(monster != null && !(monster instanceof Bomb) && !(monster instanceof buzzBomber)){
-            pushBack = 20;
-            if(isTouching(Monsters.class)){
-                touchCheck();
-                if(getY() < 300){
-                    setLocation(getX(), getY() - upwardsVelocity);
-                    upwardsVelocity -= gravity;
-                }
-                upwardsVelocity = pushBack;
-                setLocation(getX(), getY() - upwardsVelocity);
-                onGround = false;
-                upwardsVelocity -= gravity;
-            }
+            touchCheck();
+            upwardsVelocity = pushBack;
+            setLocation(getX(), getY() - upwardsVelocity);
+            onGround = false;
+            upwardsVelocity -= gravity;
         } else if(monster instanceof Bomb) {
             takeDamage = true;
-            pushBack = 14;
-            if(getY() < 300){
-                setLocation(getX(), getY() - upwardsVelocity);
-                upwardsVelocity -= gravity;
-            }
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
         } else if(monster == null && explosion != null) {
             takeDamage = true;
-            pushBack = 14;
-            if(getY() < 300){
-                setLocation(getX(), getY() - upwardsVelocity);
-                upwardsVelocity -= gravity;
-            }
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
-        } else if(monster instanceof buzzBomber) return;
+        } else if(monster instanceof buzzBomber){
+            return;
+        }
         if(isTouching(Bullet.class)) {
             takeDamage = true;
-            pushBack = 14;
-            if(getY() < 300){
-                setLocation(getX(), getY() - upwardsVelocity);
-                upwardsVelocity -= gravity;
-            }
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;

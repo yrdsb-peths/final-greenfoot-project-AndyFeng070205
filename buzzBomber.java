@@ -124,5 +124,6 @@ public class buzzBomber extends Monsters
         // Add your action code here.
         attackSonic();
         animation();
+        super.getRecked();
     }
 }

@@ -22,8 +22,10 @@ public class Bullet extends Actor
     
     public void updateRight(){
        buzzBomber b = (buzzBomber) getOneIntersectingObject(buzzBomber.class);
-       if(b == null) return;
-       right = b.right;
+       Green g = (Green) getOneIntersectingObject(Green.class);
+       if(b == null || g == null) return;
+       if(b != null) right = b.right;
+       if(g != null) right = g.right;
     }
     
     public void act()
@@ -32,6 +34,6 @@ public class Bullet extends Actor
         updateRight();
         if(right) move(5);
         else move(-5);
-        if(isTouching(Ground.class) || isAtEdge()) getWorld().removeObject(this);
+        if(isTouching(Sonic.class) || isAtEdge()) getWorld().removeObject(this);
     }
 }

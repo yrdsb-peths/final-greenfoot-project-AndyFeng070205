@@ -35,5 +35,6 @@ public class Crabmeat extends Monsters
     {
         // Add your action code here.
         animation();
+        super.getRecked();
     }
 }

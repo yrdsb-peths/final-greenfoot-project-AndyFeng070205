@@ -57,5 +57,11 @@ public class instructionWorld extends World
         label2.setLocation(331,247);
         label.setLocation(336,199);
         label2.setLocation(324,243);
+        label.setLocation(273,199);
+        removeObject(label);
+        removeObject(label2);
+        removeObject(label3);
+        label4.setLocation(124,38);
+        label4.setLocation(131,30);
     }
 }
