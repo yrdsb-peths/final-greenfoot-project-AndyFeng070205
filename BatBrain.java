@@ -90,5 +90,8 @@ public class BatBrain extends Monsters
         // Add your action code here.
         sonicInRange();
         moveAround();
+        if(isTouching(Sonic.class)){
+            getWorld().removeObject(this);
+        }
     }
 }
