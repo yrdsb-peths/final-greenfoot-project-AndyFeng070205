@@ -32,11 +32,15 @@ public class Sonic extends SmoothMover
     GreenfootImage[] sonicRecovering = new GreenfootImage[4];
     GreenfootImage[] sonicCrawl = new GreenfootImage[4];
     private boolean isWaiting = false;
+    private int numCoins = 0;
+    private int score = 0;
+    Label coins = new Label("0", 35);
+    Label scoreRecord = new Label("0", 35);
     
     public Sonic(){
         for(int i = 0; i < sonicPrepare.length; i++){
             sonicPrepare[i] = new GreenfootImage("images/sonicPrepare/waiting" + i + ".png");
-            sonicPrepare[i].scale(51, 61);
+            sonicPrepare[i].scale(51, 59);
         }
         for(int i = 0; i < sonicWalkRight.length; i++){
             sonicWalkRight[i] = new GreenfootImage("images/Sonic_walk/sonic_" + i + ".png");
@@ -74,6 +78,8 @@ public class Sonic extends SmoothMover
             sonicCrawl[i].scale(51, 47);
         }
         takeDamage = false;
+        //sonicWalkRight[0].scale()
+        //sonicWalkLeft[0].scale()
     }
     
     private int indexRight = 0;
@@ -145,7 +151,7 @@ public class Sonic extends SmoothMover
                     indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
                 }
             }
-            if(Greenfoot.isKeyDown("s")){
+            if(Greenfoot.isKeyDown("s") && getY() >= 300){
                 setImage(sonicCrawl[crawlFrame]);
                 crawlFrame = (crawlFrame + 1) % sonicCrawl.length;
             }
@@ -154,7 +160,7 @@ public class Sonic extends SmoothMover
     
     private void touchCheck() {
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
-        if(monster != null &&monster instanceof buzzBomber){
+        if(monster != null && monster instanceof buzzBomber){
             takeDamage = false;
             return;
         } else if(monster != null && monster instanceof Masher){
@@ -172,7 +178,7 @@ public class Sonic extends SmoothMover
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
     
             boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom && getX() > monsterLeft - 10 && getX() < monsterRight + 10;
-            boolean isTouchingSide = (sonicRight >= monsterLeft && sonicRight <= monsterRight) || (sonicLeft <= monsterRight && sonicLeft >= monsterLeft);
+            boolean isTouchingSide = ((sonicRight >= monsterLeft - 10 && sonicRight <= monsterRight + 10) || (sonicLeft <= monsterRight + 10 && sonicLeft >= monsterLeft - 10)) && sonicBottom >= monsterTop;
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
             if (isTouchingTop) {
                 isWaiting = false;
@@ -310,6 +316,37 @@ public class Sonic extends SmoothMover
         }
     }
     
+    private void updateScore(){
+        Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
+        if(!takeDamage && monster != null){
+            if(monster instanceof BatBrain){
+                score += 50;
+            } else if(monster instanceof Caterkiller) {
+                score += 90;
+            } else if(monster instanceof Crabmeat) {
+                score += 90;
+            } else if(monster instanceof Motobug) {
+                score += 100;
+            } else if(monster instanceof Newtron) {
+                score += 70;
+            } else if(monster instanceof buzzBomber) {
+                score += 70;
+            }
+            scoreRecord.setValue(score);
+        } else if(takeDamage && monster != null){
+            score -= 10;
+            scoreRecord.setValue(score);
+        }
+    }
+    
+    public void coinUpdate(){
+        if(isTouching(Coins.class)){
+            removeTouching(Coins.class);
+            numCoins++;
+            coins.setValue(numCoins);
+        }
+    }
+    
     public void act()
     {
         // Add your action code here.
@@ -318,5 +355,10 @@ public class Sonic extends SmoothMover
         jump();
         damage();
         afk();
+        getWorld().addObject(coins, 128, 38);
+        getWorld().addObject(scoreRecord, 130, 35);
+        coinUpdate();
+        updateScore();
+        //System.out.println(getImage().getWidth() + " " + getImage().getHeight());
     }
 }
