@@ -19,10 +19,12 @@ public class Monsters extends Actor
         type = name;
     }
     
-    public void getRecked(){
-        Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
+    public void getRecked(int h, int w){
+        double radius = Math.pow(w * w + h * h, 1/2);
+        List<Sonic> sonic = getObjectsInRange((int)radius, Sonic.class);
         if(sonic == null) return;
-        if(!sonic.takeDamage){
+        Sonic nearestSonic = sonic.get(0);
+        if(!nearestSonic.takeDamage){
             getWorld().removeObject(this);
         } else {
             return;

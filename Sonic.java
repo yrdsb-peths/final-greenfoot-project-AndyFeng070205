@@ -177,28 +177,20 @@ public class Sonic extends SmoothMover
             double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
     
-            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom && getX() > monsterLeft - 10 && getX() < monsterRight + 10;
+            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom;
             boolean isTouchingSide = ((sonicRight >= monsterLeft - 10 && sonicRight <= monsterRight + 10) || (sonicLeft <= monsterRight + 10 && sonicLeft >= monsterLeft - 10)) && sonicBottom >= monsterTop;
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
-            if (isTouchingTop) {
+            if(isTouchingTop) {
                 isWaiting = false;
                 takeDamage = false;
-                return;
-            }
-            if(isTouchingTop && isTouchingSide) {
+            }  else if(isTouchingSide) {
                 isWaiting = false;
                 takeDamage = true;
-                return;
-            }
-            if(isTouchingSide) {
+            } else if(isTouchingBottom) {
                 isWaiting = false;
                 takeDamage = true;
-                return;
-            }
-            if(isTouchingBottom) {
-                isWaiting = false;
-                takeDamage = true;
-                return;
+            } else {
+                takeDamage = false;
             }
         } else {
             takeDamage = false;
