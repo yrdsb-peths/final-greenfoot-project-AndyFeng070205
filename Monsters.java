@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.lang.Math;
+import java.util.*;
 /**
  * Write a description of class Monsters here.
  * 
@@ -18,13 +19,15 @@ public class Monsters extends Actor
         type = name;
     }
     
-    public void getRecked(){
-        Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
+    public void getRecked(int h, int w){
+        double radius = Math.pow(w * w + h * h, 1/2);
+        List<Sonic> sonic = getObjectsInRange((int)radius, Sonic.class);
         if(sonic == null) return;
-        if(sonic.takeDamage){
-            return;
-        } else {
+        Sonic nearestSonic = sonic.get(0);
+        if(!nearestSonic.takeDamage){
             getWorld().removeObject(this);
+        } else {
+            return;
         }
     }
     

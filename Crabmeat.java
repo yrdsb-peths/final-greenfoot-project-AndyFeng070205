@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Write a description of class Crabmeat here.
  * 
@@ -20,7 +20,7 @@ public class Crabmeat extends Monsters
         setImage(crab);
         for(int i = 0; i < crabs.length; i++){
             crabs[i] = new GreenfootImage("images/enemy/crabmeat/tile" + i + ".png");
-            crabs[i].scale(79, 60);
+            crabs[i].scale(83, 64);
         }
     }
     private int index = 0;
@@ -35,6 +35,11 @@ public class Crabmeat extends Monsters
     {
         // Add your action code here.
         animation();
-        super.getRecked();
+        //super.getRecked();
+        List<Sonic> sonic = getObjectsInRange(100, Sonic.class);
+        if(sonic.isEmpty()) return;
+        Sonic nearestSonic = sonic.get(0);
+        if(!nearestSonic.takeDamage && isTouching(Sonic.class)) getWorld().removeObject(this);
+        else return;
     }
 }

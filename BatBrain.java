@@ -35,7 +35,7 @@ public class BatBrain extends Monsters
     }
     
     public void sonicInRange(){
-        List<Sonic> sonic = getObjectsInRange(500, Sonic.class);
+        List<Sonic> sonic = getObjectsInRange(340, Sonic.class);
         if(!sonic.isEmpty()){
             canMove = true;
             Sonic nearestSonic = sonic.get(0);
@@ -69,14 +69,14 @@ public class BatBrain extends Monsters
     private void moveAround(){
         if(!canMove) return;
         if(right){
-            if(moveTimes >= 100){
+            if(moveTimes >= 65){
                 moveTimes = 0;
                 right = false;
             }
             move(2);
             moveTimes++;
         } else {
-            if(moveTimes >= 100){
+            if(moveTimes >= 65){
                 moveTimes = 0;
                 right = true;
             }
@@ -90,5 +90,8 @@ public class BatBrain extends Monsters
         // Add your action code here.
         sonicInRange();
         moveAround();
+        if(isTouching(Sonic.class)){
+            getWorld().removeObject(this);
+        }
     }
 }
