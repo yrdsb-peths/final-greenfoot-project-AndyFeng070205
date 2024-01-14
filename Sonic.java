@@ -36,6 +36,7 @@ public class Sonic extends SmoothMover
     private int score = 0;
     Label coins = new Label("0", 35);
     Label scoreRecord = new Label("0", 35);
+    public int speed = 0;
     
     public Sonic(){
         for(int i = 0; i < sonicPrepare.length; i++){
@@ -92,12 +93,13 @@ public class Sonic extends SmoothMover
     private int recoverFrame = 0;
     private int crawlFrame = 0;
     private void animation(){
+        Ground ground = (Ground) getOneIntersectingObject(Ground.class);
         if(isWaiting && !takeDamage){
             if(timer.millisElapsed() < 220) return;
             timer.mark();
             setImage(sonicPrepare[waitingIndex]);
             waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
-        } else if(takeDamage && getY() < 300) {
+        } else if(takeDamage && !isTouching(Ground.class)){
             if(upwardsVelocity >= 1){
                 setImage(up);
                 up.scale(65, 70);
@@ -110,7 +112,7 @@ public class Sonic extends SmoothMover
                 setImage(fall);
                 fall.scale(50, 70);
             }
-        } else if(takeDamage && getY() >= 300) {
+        } else if(takeDamage && isTouching(Ground.class)){
             if(timer.millisElapsed() < 500) return;
             timer.mark();
             if(recoverFrame >= sonicRecovering.length){
@@ -122,7 +124,7 @@ public class Sonic extends SmoothMover
                 recoverFrame++;
             }
         } else {
-            if(timer.millisElapsed() < 95) return; 
+            if(timer.millisElapsed() < 95) return;
             timer.mark();
             if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
                 if(right){
@@ -142,7 +144,7 @@ public class Sonic extends SmoothMover
                     indexSL = (indexSL + 1) % sonicSprintLeft.length;
                 }
             }
-            if(getY() < 300){
+            if(!takeDamage && !isTouching(Ground.class)){
                 if(right){
                     setImage(sonicJumpRight[indexJumpRight]);
                     indexJumpRight = (indexJumpRight + 1) % sonicJumpRight.length;
@@ -150,8 +152,8 @@ public class Sonic extends SmoothMover
                     setImage(sonicJumpLeft[indexJumpLeft]);
                     indexJumpLeft = (indexJumpLeft + 1) % sonicJumpRight.length;
                 }
-            }
-            if(Greenfoot.isKeyDown("s") && getY() >= 300){
+            } 
+            if(Greenfoot.isKeyDown("s") && isTouching(Ground.class)){
                 setImage(sonicCrawl[crawlFrame]);
                 crawlFrame = (crawlFrame + 1) % sonicCrawl.length;
             }
@@ -198,17 +200,51 @@ public class Sonic extends SmoothMover
         }
     }
     
+    private void touchGround(){
+        Ground ground = (Ground) getOneIntersectingObject(Ground.class);
+        if(ground == null) return;
+        int groundTop = ground.getY() - ground.getImage().getHeight() / 2;
+        int groundBottom = ground.getY() + ground.getImage().getHeight() / 2;
+        int groundLeft = ground.getX() - ground.getImage().getWidth() / 2;
+        int groundRight = ground.getX() + ground.getImage().getWidth() / 2;
+        
+        double sonicTop = getY() - getImage().getHeight() / 2;
+        double sonicBottom = getY() + getImage().getHeight() / 2; 
+        double sonicRight = getX() + getImage().getWidth() / 2; 
+        double sonicLeft = getX() - getImage().getWidth() / 2; 
+        
+        boolean touchingTop = sonicTop < groundTop && sonicBottom >= groundTop && isTouching(Ground.class);
+        boolean touchingBottom = sonicTop <= groundBottom;
+        boolean onLeftSide = getX() < groundLeft + 5;
+        boolean onRightSide = getX() > groundRight - 5;
+        
+        if(touchingTop){
+            onGround = true;
+            setLocation(getX(), groundTop - getImage().getHeight() / 2 + 1);
+            upwardsVelocity = 0;
+        } else if(touchingBottom) {
+            upwardsVelocity = 0;
+            //while(!touchingTop){
+                if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
+                else setLocation(getX() - 1, getY() - upwardsVelocity);
+                upwardsVelocity -= gravity;
+            //}
+        } else if(onLeftSide || onRightSide){
+            upwardsVelocity = 0;
+            //while(!touchingTop){
+                if(right) setLocation(getX() - (int) speed / 2, getY() - upwardsVelocity);
+                else setLocation(getX() + (int) speed / 2, getY() - upwardsVelocity);
+                upwardsVelocity -= gravity;
+            //}
+        }
+    }
+    
     private int gravity = 1;
     public boolean onGround = false;
     private int jumpForce = 20;
     private int upwardsVelocity = 0;
     private void jump(){
-        if(getY() >= 300){
-            onGround = true;
-            setLocation(getX(), 300);
-            upwardsVelocity = 0;
-        }
-        if(getY() < 300){
+        if(!isTouching(Ground.class)){
             upwardsVelocity -= gravity;
             if(takeDamage){
                 setLocation(getX() - 2, getY() - upwardsVelocity);
@@ -216,6 +252,9 @@ public class Sonic extends SmoothMover
             }
             if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
             else setLocation(getX() - 1, getY() - upwardsVelocity);
+        }
+        if(isTouching(Ground.class)){
+            touchGround();
         }
         if(Greenfoot.isKeyDown("w") && onGround){
             if(takeDamage) return;
@@ -240,26 +279,34 @@ public class Sonic extends SmoothMover
     }
     
     private void move(){
+        Ground ground = (Ground) getOneIntersectingObject(Ground.class);
         if(isWaiting){
             return;
-        }
-        if(Greenfoot.isKeyDown("d")){
+        } else if(Greenfoot.isKeyDown("d")){
             move(5);
+            speed = 5;
             right = true;
-        }
-        if(Greenfoot.isKeyDown("a")){
+        } else if(Greenfoot.isKeyDown("a")){
             move(-5);
+            speed = 5;
             right = false;
         }
+        if(ground == null) return;
+        int groundTop = ground.getY() - ground.getImage().getHeight() / 2;
         if(Greenfoot.isKeyDown("shift")){
-            if(right) move(7);
-            else move(-7);
+            if(right){
+                move(7);
+            } else {
+                move(-7);
+            }
+            speed = 7;
         }
         if(Greenfoot.isKeyDown("s")){
             if(right) move(4);
             else move(-4);
+            speed = 4;
         }
-        if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("s") || getY() < 300)){
+        if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("s")) && isTouching(Ground.class)){
             if(right){
                 setImage(SonicStart);
                 SonicStart.scale(45, 59);
