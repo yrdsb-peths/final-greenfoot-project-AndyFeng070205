@@ -7,6 +7,7 @@ dependency1.to=Sonic
 dependency1.type=UsesDependency
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 dependency10.from=instructionWorld
 dependency10.to=titleWorld
 dependency10.type=UsesDependency
@@ -98,11 +99,43 @@ dependency18.type=UsesDependency
 dependency19.from=Sonic
 dependency19.to=Caterkiller
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
+dependency10.from=Bullet
+dependency10.to=Sonic
+dependency10.type=UsesDependency
+dependency11.from=Sonic
+dependency11.to=SimpleTimer
+dependency11.type=UsesDependency
+dependency12.from=Sonic
+dependency12.to=Label
+dependency12.type=UsesDependency
+dependency13.from=Sonic
+dependency13.to=Monsters
+dependency13.type=UsesDependency
+dependency14.from=Sonic
+dependency14.to=buzzBomber
+dependency14.type=UsesDependency
+dependency15.from=Sonic
+dependency15.to=Masher
+dependency15.type=UsesDependency
+dependency16.from=Sonic
+dependency16.to=Explosion
+dependency16.type=UsesDependency
+dependency17.from=Sonic
+dependency17.to=Bomb
+dependency17.type=UsesDependency
+dependency18.from=Sonic
+dependency18.to=BatBrain
+dependency18.type=UsesDependency
+dependency19.from=Sonic
+dependency19.to=Caterkiller
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 dependency19.type=UsesDependency
 dependency2.from=ScrollingWorld
 dependency2.to=Ground
 dependency2.type=UsesDependency
 dependency20.from=Sonic
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 dependency20.to=Masher
@@ -182,12 +215,40 @@ dependency27.from=Masher
 dependency27.to=SimpleTimer
 dependency27.type=UsesDependency
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
+dependency20.to=Crabmeat
+dependency20.type=UsesDependency
+dependency21.from=Sonic
+dependency21.to=Motobug
+dependency21.type=UsesDependency
+dependency22.from=Sonic
+dependency22.to=Newtron
+dependency22.type=UsesDependency
+dependency23.from=Sonic
+dependency23.to=Bullet
+dependency23.type=UsesDependency
+dependency24.from=Sonic
+dependency24.to=Coins
+dependency24.type=UsesDependency
+dependency25.from=Explosion
+dependency25.to=SimpleTimer
+dependency25.type=UsesDependency
+dependency26.from=Monsters
+dependency26.to=Sonic
+dependency26.type=UsesDependency
+dependency27.from=Masher
+dependency27.to=SimpleTimer
+dependency27.type=UsesDependency
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 dependency28.from=BatBrain
 dependency28.to=SimpleTimer
 dependency28.type=UsesDependency
 dependency29.from=BatBrain
 dependency29.to=Sonic
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -195,6 +256,7 @@ dependency29.type=UsesDependency
 dependency3.from=titleWorld
 dependency3.to=Label
 dependency3.type=UsesDependency
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 dependency30.from=Sonic
@@ -300,6 +362,32 @@ dependency37.from=Bomb2
 dependency37.to=Sonic
 dependency37.type=UsesDependency
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
+dependency30.from=Motobug
+dependency30.to=SimpleTimer
+dependency30.type=UsesDependency
+dependency31.from=Motobug
+dependency31.to=Sonic
+dependency31.type=UsesDependency
+dependency32.from=buzzBomber
+dependency32.to=SimpleTimer
+dependency32.type=UsesDependency
+dependency33.from=buzzBomber
+dependency33.to=Sonic
+dependency33.type=UsesDependency
+dependency34.from=buzzBomber
+dependency34.to=Bullet
+dependency34.type=UsesDependency
+dependency35.from=Bomb
+dependency35.to=SimpleTimer
+dependency35.type=UsesDependency
+dependency36.from=Bomb
+dependency36.to=Explosion
+dependency36.type=UsesDependency
+dependency37.from=Bomb2
+dependency37.to=Sonic
+dependency37.type=UsesDependency
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 dependency38.from=Bomb1
 dependency38.to=SimpleTimer
 dependency38.type=UsesDependency
@@ -329,6 +417,9 @@ dependency45.to=SimpleTimer
 dependency45.type=UsesDependency
 dependency46.from=Crabmeat
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -337,6 +428,7 @@ dependency46.type=UsesDependency
 dependency47.from=Blue
 dependency47.to=SimpleTimer
 dependency47.type=UsesDependency
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 dependency48.from=Blue
@@ -374,6 +466,8 @@ dependency9.to=Label
 =======
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 dependency5.from=instructionWorld
 dependency5.to=Label
 dependency5.type=UsesDependency
@@ -389,6 +483,9 @@ dependency8.type=UsesDependency
 dependency9.from=Bullet
 dependency9.to=Green
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -405,6 +502,9 @@ package.numTargets=32
 package.numDependencies=47
 package.numTargets=30
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
+=======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -446,7 +546,11 @@ target11.y=0
 target12.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target12.name=Motobug
+=======
+target12.name=ScrollableWorld
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target12.name=ScrollableWorld
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -461,7 +565,11 @@ target12.y=0
 target13.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target13.name=buzzBomber
+=======
+target13.name=Motobug
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target13.name=Motobug
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -476,7 +584,11 @@ target13.y=0
 target14.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target14.name=Bomb
+=======
+target14.name=buzzBomber
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target14.name=buzzBomber
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -491,7 +603,11 @@ target14.y=0
 target15.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target15.name=MyWorld
+=======
+target15.name=Bomb
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target15.name=Bomb
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -513,7 +629,11 @@ target16.y=0
 target17.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target17.name=SWorld
+=======
+target17.name=Bullet
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target17.name=Bullet
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -528,7 +648,11 @@ target17.y=0
 target18.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target18.name=Bullet
+=======
+target18.name=highGround
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target18.name=highGround
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -543,7 +667,11 @@ target18.y=0
 target19.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target19.name=highGround
+=======
+target19.name=Explosion
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target19.name=Explosion
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -565,7 +693,11 @@ target2.y=0
 target20.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target20.name=Explosion
+=======
+target20.name=SimpleTimer
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target20.name=SimpleTimer
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -580,7 +712,11 @@ target20.y=0
 target21.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target21.name=SimpleTimer
+=======
+target21.name=Blue
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target21.name=Blue
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -595,7 +731,11 @@ target21.y=0
 target22.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target22.name=Blue
+=======
+target22.name=Bomb2
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target22.name=Bomb2
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -610,7 +750,11 @@ target22.y=0
 target23.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target23.name=Bomb2
+=======
+target23.name=SmoothMover
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target23.name=SmoothMover
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -625,7 +769,11 @@ target23.y=0
 target24.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target24.name=SmoothMover
+=======
+target24.name=Crabmeat
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target24.name=Crabmeat
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -640,7 +788,11 @@ target24.y=0
 target25.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target25.name=Crabmeat
+=======
+target25.name=instructionWorld
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target25.name=instructionWorld
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -655,7 +807,11 @@ target25.y=0
 target26.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target26.name=instructionWorld
+=======
+target26.name=Spring
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target26.name=Spring
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -670,7 +826,11 @@ target26.y=0
 target27.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target27.name=Spring
+=======
+target27.name=Caterkiller
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target27.name=Caterkiller
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -685,7 +845,11 @@ target27.y=0
 target28.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target28.name=Caterkiller
+=======
+target28.name=Monsters
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target28.name=Monsters
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -700,7 +864,11 @@ target28.y=0
 target29.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target29.name=exampleWorld
+=======
+target29.name=Bomb1
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target29.name=Bomb1
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -722,7 +890,11 @@ target3.y=0
 target30.height=70
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 target30.name=Monsters
+=======
+target30.name=Green
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 target30.name=Green
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
@@ -734,6 +906,7 @@ target30.type=ClassTarget
 target30.width=120
 target30.x=0
 target30.y=0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 target31.height=70
@@ -750,6 +923,8 @@ target32.type=ClassTarget
 target32.width=120
 target32.x=0
 target32.y=0
+=======
+>>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
 >>>>>>> 97ec1e4075acfd6f68bd6bebca082b00379b1947
 =======
