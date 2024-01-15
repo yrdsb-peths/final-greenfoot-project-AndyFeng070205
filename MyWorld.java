@@ -1,38 +1,29 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 /**
- * Write a description of class MyWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Class MyWorld: sample world to show how to make use of my world super-class SWorld
  */
-public class MyWorld extends World
+public class MyWorld extends SWorld
 {
-
     /**
-     * Constructor for objects of class MyWorld.
-     * 
+     * Creates a scrolling world using a main actor, a background, some obstacles, and a non-scrolling score.
      */
+    public Label scoreRecord;
+    public Label coins;
+    
     public MyWorld()
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
-        addObject(new Sonic(), 40, 40);
-        //addObject(new Ground(), 300, 350);
-        prepare();
-    }
-
-    /**
-     * Prepare the world for the start of the program.
-     * That is: create the initial objects and add them to the world.
-     */
-    /**
-     * Prepare the world for the start of the program.
-     * That is: create the initial objects and add them to the world.
-     */
-    private void prepare()
-    {
-        Label label = new Label("Score:", 35);
-        addObject(label, 58, 36);
+        super(800, 500, 1, 1000); // scroll world constructor call; last parameter is scroll width
+        // in the following statement, the main actor is placed in the center of the window
+        setMainActor(new Sonic(), 400, 400); // the int parameters are centered window x and y ranges
+        // to start the main actor elsewhere
+        //GreenfootImage bg = new GreenfootImage("scene.jpg");
+        //setScrollingBackground(bg); // set the scolling background image
+        // add other scrollable objects normally
+        // use of the following also adds scrollable objects
+        //addObject(new Ground(), 380, 345, true); // the boolean determines scrollable state
+        // use the following for non-scrollable objects
+        //addObject(new Score(), 40, 390, false);
+        addObject(new Ground(), 400, 400, true);
     }
 }
