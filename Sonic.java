@@ -34,8 +34,6 @@ public class Sonic extends SmoothMover
     private boolean isWaiting = false;
     private int numCoins = 0;
     private int score = 0;
-    Label coins = new Label("0", 35);
-    Label scoreRecord = new Label("0", 35);
     public int speed = 0;
     
     public Sonic(){
@@ -179,7 +177,7 @@ public class Sonic extends SmoothMover
             double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
     
-            boolean isTouchingTop = sonicBottom >= monsterTop && sonicBottom <= monsterBottom;
+            boolean isTouchingTop = sonicBottom > monsterTop && sonicBottom <= monsterBottom && isTouching(Monsters.class);
             boolean isTouchingSide = ((sonicRight >= monsterLeft - 10 && sonicRight <= monsterRight + 10) || (sonicLeft <= monsterRight + 10 && sonicLeft >= monsterLeft - 10)) && sonicBottom >= monsterTop;
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
             if(isTouchingTop) {
@@ -214,9 +212,9 @@ public class Sonic extends SmoothMover
         double sonicLeft = getX() - getImage().getWidth() / 2; 
         
         boolean touchingTop = sonicTop < groundTop && sonicBottom >= groundTop && isTouching(Ground.class);
-        boolean touchingBottom = sonicTop <= groundBottom;
-        boolean onLeftSide = getX() < groundLeft + 5;
-        boolean onRightSide = getX() > groundRight - 5;
+        boolean touchingBottom = sonicTop <= groundBottom && isTouching(Ground.class);
+        boolean onLeftSide = sonicRight < groundLeft + 5 && isTouching(Ground.class);
+        boolean onRightSide = sonicLeft > groundRight - 5 && isTouching(Ground.class);;
         
         if(touchingTop){
             onGround = true;
@@ -356,7 +354,7 @@ public class Sonic extends SmoothMover
     }
     
     private void updateScore(){
-        MyWorld myworld = (MyWorld) getWorld();
+        //MyWorld myworld = (MyWorld) getWorld();
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
         if(!takeDamage && monster != null){
             if(monster instanceof BatBrain){
@@ -372,19 +370,19 @@ public class Sonic extends SmoothMover
             } else if(monster instanceof buzzBomber) {
                 score += 70;
             }
-            scoreRecord.setValue(score);
+            //myworld.scoreRecord.setValue(score);
         } else if(takeDamage && monster != null){
             score -= 10;
-            myworld.scoreRecord.setValue(score);
+            //myworld.scoreRecord.setValue(score);
         }
     }
     
     public void coinUpdate(){
-        MyWorld myworld = (MyWorld) getWorld();
+        //MyWorld myworld = (MyWorld) getWorld();
         if(isTouching(Coins.class)){
             removeTouching(Coins.class);
             numCoins++;
-            myworld.coins.setValue(numCoins);
+            //myworld.coins.setValue(numCoins);
         }
     }
     
@@ -396,8 +394,8 @@ public class Sonic extends SmoothMover
         jump();
         damage();
         afk();
-        getWorld().addObject(coins, 128, 38);
-        getWorld().addObject(scoreRecord, 130, 35);
+        //getWorld().addObject(coins, 128, 38);
+        //getWorld().addObject(scoreRecord, 130, 35);
         coinUpdate();
         updateScore();
         //System.out.println(getImage().getWidth() + " " + getImage().getHeight());
