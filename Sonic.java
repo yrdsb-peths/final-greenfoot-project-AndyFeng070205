@@ -199,6 +199,7 @@ public class Sonic extends SmoothMover
             } else if (!isTouchingTop) {
                 isWaiting = false;
                 takeDamage = true;
+                life--;
             } else {
                 takeDamage = false;
             }
@@ -346,7 +347,6 @@ public class Sonic extends SmoothMover
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
-            life--;
         } else if(monster instanceof Bomb) {
             takeDamage = true;
             upwardsVelocity = pushBack;
