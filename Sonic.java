@@ -439,12 +439,14 @@ public class Sonic extends SmoothMover
         coinUpdate();
         updateScore();
         handleGrassSound();
-        score++;
+        if(!takeDamage) score++;
         myworld.scoreRecord.setValue(score);
         if(life <= 0){
             Greenfoot.setWorld(new lossing(score, numCoins));
+            myworld.music.stop();
         } else if(isTouching(End.class)){
             Greenfoot.setWorld(new winning(score, numCoins));
+            myworld.music.stop();
         }
     }
     
