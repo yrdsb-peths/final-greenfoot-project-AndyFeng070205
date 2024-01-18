@@ -451,7 +451,8 @@ public class Sonic extends SmoothMover
     }
     
     private void handleGrassSound() {
-        if (Greenfoot.isKeyDown("shift") && onGround && !takeDamage) {
+        World myworld = getWorld();
+        if (Greenfoot.isKeyDown("shift") && onGround && !takeDamage && myworld instanceof MyWorld) {
             if (!grass.isPlaying()) {
                 grass.play();
             }
@@ -461,7 +462,8 @@ public class Sonic extends SmoothMover
     }
     
     private void handleWalkOnGrassSound() {
-        if (Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a") && onGround && !takeDamage) {
+        World myworld = getWorld();
+        if (Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a") && onGround && !takeDamage && myworld instanceof MyWorld) {
             if (!walkOnGrass.isPlaying()) {
                 walkOnGrass.play();
             }
