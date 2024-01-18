@@ -14,12 +14,14 @@ public class Coins extends Actor
      */
     GreenfootImage[] coins = new GreenfootImage[15];
     SimpleTimer timer = new SimpleTimer();
+    GreenfootSound coin = new GreenfootSound("sounds/coin.mp3");
     
     public Coins(){
         for(int i = 0; i < coins.length; i++){
             coins[i] = new GreenfootImage("images/coins/coin" + i + ".gif");
             coins[i].scale(30, 30);
         }
+        coin.setVolume(50);
     }
     
     private int frame = 0;
@@ -34,5 +36,9 @@ public class Coins extends Actor
     {
         // Add your action code here.
         animation();
+        if(isTouching(Sonic.class)){
+            coin.play();
+            getWorld().removeObject(this);
+        }
     }
 }

@@ -18,19 +18,15 @@ public class Monsters extends Actor
     public Monsters(String name){
         type = name;
     }
-    
-    public void getRecked(int h, int w){
-        double radius = Math.pow(w * w + h * h, 1/2);
-        List<Sonic> sonic = getObjectsInRange((int)radius, Sonic.class);
+    public void getRecked(){
+        Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
         if(sonic == null) return;
-        Sonic nearestSonic = sonic.get(0);
-        if(!nearestSonic.takeDamage){
+        if(!sonic.takeDamage){
             getWorld().removeObject(this);
         } else {
             return;
         }
     }
-    
     public void act()
     {
         // Add your action code here.

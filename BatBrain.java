@@ -39,12 +39,14 @@ public class BatBrain extends Monsters
         if(!sonic.isEmpty()){
             canMove = true;
             Sonic nearestSonic = sonic.get(0);
-            if(nearestSonic.getY() < getY()){
-                setImage(waiting);
-                return;
+            if(getY() < nearestSonic.getY()){
+                setLocation(getX(), getY() + 2);
+            } else if(getY() > nearestSonic.getY()){
+                setLocation(getX(), getY() - 1);
             } else {
-                flying();
+                setLocation(getX(), nearestSonic.getY());
             }
+            flying();
         } else {
             setImage(waiting);
             canMove = false;

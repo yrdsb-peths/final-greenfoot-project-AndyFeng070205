@@ -29,9 +29,10 @@ public class Green extends Newtron
             double xDistance = Math.abs(getX() - nearestSonic.getX());
             double yDistance = Math.abs(getY() - nearestSonic.getY());
             double turnDegree = Math.atan(yDistance / xDistance);
+            if(nearestSonic.takeDamage) return;
             if(canFire){
                 Bullet b = new Bullet();
-                if(right) b.setRotation((int)(turnDegree * 180 / Math.PI));
+                if(right) b.setRotation((int)(turnDegree * 180 / Math.PI) - 180);
                 else b.setRotation(-(int)(turnDegree * 180 / Math.PI));
                 getWorld().addObject(b, getX() - 5, getY() + 10);
                 canFire = false;

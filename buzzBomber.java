@@ -56,6 +56,7 @@ public class buzzBomber extends Monsters
         if(!sonic.isEmpty()){
             Sonic nearestSonic = sonic.get(0);
             double xDistance = getX() - nearestSonic.getX();
+            if(nearestSonic.takeDamage) return;
             if(xDistance > 0){
                 right = false;
                 setImage(buzzBomberAttackLeft[leftFrame]);
@@ -105,7 +106,7 @@ public class buzzBomber extends Monsters
             turnDegree = Math.atan(yDistance / xDistance);
             if(canFire){
                 Bullet b = new Bullet();
-                if(right) b.setRotation((int)(turnDegree * 180 / Math.PI));
+                if(right) b.setRotation((int)(turnDegree * 180 / Math.PI) - 180);
                 else b.setRotation(-(int)(turnDegree * 180 / Math.PI));
                 getWorld().addObject(b, getX() - 5, getY() + 10);
                 canFire = false;
@@ -124,5 +125,8 @@ public class buzzBomber extends Monsters
         // Add your action code here.
         attackSonic();
         animation();
+        if(isTouching(Sonic.class)){
+            getWorld().removeObject(this);
+        }
     }
 }

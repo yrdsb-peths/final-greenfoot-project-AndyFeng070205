@@ -76,16 +76,17 @@ public class Blue extends Newtron
     }
     
     public void attack(){
-        List<Sonic> sonic = getObjectsInRange(100, Sonic.class);
+        List<Sonic> sonic = getObjectsInRange(200, Sonic.class);
         if(!sonic.isEmpty()){
             Sonic nearestSonic = sonic.get(0);
             int xDistance = Math.abs(getX() - nearestSonic.getX());
             int yDistance = Math.abs(getY() - nearestSonic.getY());
             double hypDistance = Math.pow(xDistance * xDistance + yDistance * yDistance, 1/2);
             double turnDegree = Math.atan(yDistance / xDistance);
-            if(hypDistance < 100){
-                if(right) move(5);
-                else move(-5);
+            if(nearestSonic.takeDamage) return;
+            if(hypDistance < 150){
+                if(right) move(3);
+                else move(-3);
             }
             if(right){
                 setRotation((int)(turnDegree * 180 / Math.PI));

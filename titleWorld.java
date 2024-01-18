@@ -14,7 +14,7 @@ public class titleWorld extends World
      * 
      */
     Label label2 = new Label("Start", 34);
-    Label label = new Label("Button", 34);
+    Label label = new Label("instruction", 34);
     public titleWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
@@ -29,7 +29,7 @@ public class titleWorld extends World
         if(label.getValue() == "Start" && Greenfoot.mouseClicked(label)){
             Greenfoot.setWorld(new MyWorld());
         }
-        else if(label.getValue() == "Button" && Greenfoot.mouseClicked(label)){
+        else if(label.getValue() == "instruction" && Greenfoot.mouseClicked(label)){
             Greenfoot.setWorld(new instructionWorld());
         }
     }

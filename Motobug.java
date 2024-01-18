@@ -61,10 +61,11 @@ public class Motobug extends Monsters
     
     public void attackSonic(){
         List<Sonic> sonic = getObjectsInRange(300, Sonic.class);
-        if(!sonic.isEmpty()){
+        if(!sonic.isEmpty() && isTouching(Ground.class)){
             Sonic nearestSonic = sonic.get(0); // Get the first Sonic in the list
             double distance = getX() - nearestSonic.getX();
-            if(distance > 0 && nearestSonic.onGround == true){
+            if(nearestSonic.takeDamage) return;
+            if(distance > 0){
                 right = false;
                 move(-7);
             } else if (distance < 0 && nearestSonic.onGround == true){
@@ -80,15 +81,25 @@ public class Motobug extends Monsters
         }
     }
     
+    private int up = 0;
+    private int gravity = 1;
+    public void drop(){
+        if(!isTouching(Ground.class)){
+            up -= gravity;
+            setLocation(getX(), getY() - up);
+        }
+        Ground ground = (Ground) getOneIntersectingObject(Ground.class);
+        if(ground == null) return;
+        int groundTop = ground.getY() - ground.getImage().getHeight() / 2;
+        if(isTouching(Ground.class)) setLocation(getX(), groundTop - getImage().getHeight() / 2);
+    }
+    
     public void act()
     {
         // Add your action code here.
         animation();
         attackSonic();
-        List<Sonic> sonic = getObjectsInRange(100, Sonic.class);
-        if(sonic.isEmpty()) return;
-        Sonic nearestSonic = sonic.get(0);
-        if(!nearestSonic.takeDamage && isTouching(Sonic.class)) getWorld().removeObject(this);
-        else return;
+        drop();
+        super.getRecked();
     }
 }

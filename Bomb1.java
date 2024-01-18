@@ -19,16 +19,16 @@ public class Bomb1 extends Bomb
     private boolean right = false;
     GreenfootImage[] bomb1Left = new GreenfootImage[5];
     GreenfootImage[] bomb1Right = new GreenfootImage[5];
-    GreenfootImage image = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb0.png");
+    GreenfootImage image = new GreenfootImage("images/enemy/Bomb/bomb1/bomb0.png");
     private boolean explode = false;
     public Bomb1(){
         super("Bomb1");
         for(int i = 0; i < bomb1Left.length; i++){
-            bomb1Left[i] = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb" + i + ".png");
+            bomb1Left[i] = new GreenfootImage("images/enemy/Bomb/bomb1/bomb" + i + ".png");
             bomb1Left[i].scale(46, 57);
         }
         for(int i = 0; i < bomb1Right.length; i++){
-            bomb1Right[i] = new GreenfootImage("images/enemy/Bomb/bomb1/Bomb" + i + ".png");
+            bomb1Right[i] = new GreenfootImage("images/enemy/Bomb/bomb1/bomb" + i + ".png");
             bomb1Right[i].mirrorHorizontally();
             bomb1Right[i].scale(46, 57);
         }
