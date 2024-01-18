@@ -83,6 +83,9 @@ public class Sonic extends SmoothMover
         grass.setVolume(34);
         walkOnGrass.setVolume(34);
         jump.setVolume(30);
+        life = 3;
+        score = 0;
+        numCoins = 0;
         //sonicWalkRight[0].scale()
         //sonicWalkLeft[0].scale()
     }
@@ -335,7 +338,6 @@ public class Sonic extends SmoothMover
     GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");
     private int pushBack = 14;
     public void damage(){
-        life--;
         Actor monster = getOneIntersectingObject(Monsters.class);
         Explosion explosion = (Explosion) getOneIntersectingObject(Explosion.class);
         if(monster != null && !(monster instanceof Bomb) && !(monster instanceof buzzBomber)){
@@ -344,18 +346,21 @@ public class Sonic extends SmoothMover
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+            life--;
         } else if(monster instanceof Bomb) {
             takeDamage = true;
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+            life--;
         } else if(monster == null && explosion != null) {
             takeDamage = true;
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+            life--;
         } else if(monster instanceof buzzBomber){
             return;
         }
@@ -366,6 +371,7 @@ public class Sonic extends SmoothMover
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+            life--;
         }
         if(isTouching(Spikes.class)){
             takeDamage = true;
@@ -373,6 +379,7 @@ public class Sonic extends SmoothMover
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+            life--;
         }
         if(getY() >= 600){
             takeDamage = true;
@@ -381,6 +388,7 @@ public class Sonic extends SmoothMover
             Ground nearestGround = ground.get(0);
             int groundSide = nearestGround.getX() - nearestGround.getImage().getWidth() / 2 + 10;
             setLocation(groundSide + 100, 0);
+            life--;
         }
     }
     
@@ -434,7 +442,7 @@ public class Sonic extends SmoothMover
         score++;
         myworld.scoreRecord.setValue(score);
         if(life <= 0){
-            //Greenfoot.setWorld(new lossing());
+            Greenfoot.setWorld(new lossing(score, numCoins));
         } else if(getX() >= getWorld().getWidth() * 2 && life > 0){
             //Greenfoot.setWorld(new winning());
         }
