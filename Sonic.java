@@ -35,6 +35,9 @@ public class Sonic extends SmoothMover
     private int numCoins = 0;
     private int score = 0;
     public int speed = 0;
+    GreenfootSound grass = new GreenfootSound("sounds/runningInGrass.mp3");
+    GreenfootSound walkOnGrass = new GreenfootSound("sounds/walkOnGrass.mp3");
+    GreenfootSound jump = new GreenfootSound("sounds/jump.mp3");
     
     public Sonic(){
         for(int i = 0; i < sonicPrepare.length; i++){
@@ -77,6 +80,9 @@ public class Sonic extends SmoothMover
             sonicCrawl[i].scale(51, 47);
         }
         takeDamage = false;
+        grass.setVolume(34);
+        walkOnGrass.setVolume(34);
+        jump.setVolume(30);
         //sonicWalkRight[0].scale()
         //sonicWalkLeft[0].scale()
     }
@@ -108,7 +114,7 @@ public class Sonic extends SmoothMover
             }
             if(upwardsVelocity <= -10){
                 setImage(fall);
-                fall.scale(50, 70);
+                fall.scale(70, 50);
             }
         } else if(takeDamage && isTouching(Ground.class)){
             if(timer.millisElapsed() < 500) return;
@@ -125,6 +131,7 @@ public class Sonic extends SmoothMover
             if(timer.millisElapsed() < 95) return;
             timer.mark();
             if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
+                walkOnGrass.play();
                 if(right){
                     setImage(sonicWalkRight[indexRight]);
                     indexRight = (indexRight + 1) % sonicWalkRight.length;
@@ -137,9 +144,11 @@ public class Sonic extends SmoothMover
                 if(right){
                     setImage(sonicSprintRight[indexSR]);
                     indexSR = (indexSR + 1) % sonicSprintRight.length;
+                    walkOnGrass.play();
                 } else {
                     setImage(sonicSprintLeft[indexSL]);
                     indexSL = (indexSL + 1) % sonicSprintLeft.length;
+                    walkOnGrass.play();
                 }
             }
             if(!takeDamage && !isTouching(Ground.class)){
@@ -177,16 +186,14 @@ public class Sonic extends SmoothMover
             double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
     
-            boolean isTouchingTop = sonicBottom > monsterTop && sonicBottom <= monsterBottom && isTouching(Monsters.class);
-            boolean isTouchingSide = ((sonicRight >= monsterLeft - 10 && sonicRight <= monsterRight + 10) || (sonicLeft <= monsterRight + 10 && sonicLeft >= monsterLeft - 10)) && sonicBottom >= monsterTop;
-            boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop >= monsterTop;
-            if(isTouchingTop) {
+            boolean isTouchingTop = sonicBottom <= monsterTop;
+            boolean isTouchingSide = (sonicRight >= monsterLeft || sonicLeft <= monsterRight) && sonicBottom >= monsterTop;
+            boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop > monsterTop;
+            
+            if (isTouchingTop) {
                 isWaiting = false;
                 takeDamage = false;
-            }  else if(isTouchingSide) {
-                isWaiting = false;
-                takeDamage = true;
-            } else if(isTouchingBottom) {
+            } else if (!isTouchingTop) {
                 isWaiting = false;
                 takeDamage = true;
             } else {
@@ -216,24 +223,13 @@ public class Sonic extends SmoothMover
         boolean onLeftSide = sonicRight < groundLeft + 5 && isTouching(Ground.class);
         boolean onRightSide = sonicLeft > groundRight - 5 && isTouching(Ground.class);;
         
-        if(touchingTop){
+        if(touchingTop && !takeDamage){
             onGround = true;
             setLocation(getX(), groundTop - getImage().getHeight() / 2 + 1);
             upwardsVelocity = 0;
-        } else if(touchingBottom) {
+        } else if(touchingBottom && !takeDamage){
             upwardsVelocity = 0;
-            //while(!touchingTop){
-                if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
-                else setLocation(getX() - 1, getY() - upwardsVelocity);
-                upwardsVelocity -= gravity;
-            //}
-        } else if(onLeftSide || onRightSide){
-            upwardsVelocity = 0;
-            //while(!touchingTop){
-                if(right) setLocation(getX() - (int) speed / 2, getY() - upwardsVelocity);
-                else setLocation(getX() + (int) speed / 2, getY() - upwardsVelocity);
-                upwardsVelocity -= gravity;
-            //}
+            setLocation(getX(), sonicBottom);
         }
     }
     
@@ -242,6 +238,7 @@ public class Sonic extends SmoothMover
     private int jumpForce = 20;
     private int upwardsVelocity = 0;
     private void jump(){
+        Spring spring = (Spring) getOneIntersectingObject(Spring.class);
         if(!isTouching(Ground.class)){
             upwardsVelocity -= gravity;
             if(takeDamage){
@@ -253,14 +250,29 @@ public class Sonic extends SmoothMover
         }
         if(isTouching(Ground.class)){
             touchGround();
+            upwardsVelocity = 0;
         }
         if(Greenfoot.isKeyDown("w") && onGround){
+            jump.play();
             if(takeDamage) return;
             upwardsVelocity += jumpForce;
             if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
             else setLocation(getX() - 1, getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
+        }
+        if(isTouching(Spring.class)){
+            if(spring == null) return;
+            int springTop = spring.getY() - spring.getImage().getHeight() / 2;
+            int sonicBottom = getY() + getImage().getHeight() / 2;
+            boolean isTouchingTop = sonicBottom >= springTop;
+            if(isTouchingTop){
+                upwardsVelocity += (jumpForce + 10);
+                if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
+                else setLocation(getX() - 1, getY() - upwardsVelocity);
+                onGround = false;
+                upwardsVelocity -= gravity;
+            }
         }
     }
     
@@ -289,9 +301,10 @@ public class Sonic extends SmoothMover
             speed = 5;
             right = false;
         }
-        if(ground == null) return;
-        int groundTop = ground.getY() - ground.getImage().getHeight() / 2;
+        
         if(Greenfoot.isKeyDown("shift")){
+            if(!Greenfoot.isKeyDown("shift") || !onGround) grass.stop();
+            else grass.play();
             if(right){
                 move(7);
             } else {
@@ -299,6 +312,7 @@ public class Sonic extends SmoothMover
             }
             speed = 7;
         }
+        
         if(Greenfoot.isKeyDown("s")){
             if(right) move(4);
             else move(-4);
@@ -321,6 +335,7 @@ public class Sonic extends SmoothMover
     GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");
     private int pushBack = 14;
     public void damage(){
+        life--;
         Actor monster = getOneIntersectingObject(Monsters.class);
         Explosion explosion = (Explosion) getOneIntersectingObject(Explosion.class);
         if(monster != null && !(monster instanceof Bomb) && !(monster instanceof buzzBomber)){
@@ -346,15 +361,31 @@ public class Sonic extends SmoothMover
         }
         if(isTouching(Bullet.class)) {
             takeDamage = true;
+            removeTouching(Bullet.class);
             upwardsVelocity = pushBack;
             setLocation(getX(), getY() - upwardsVelocity);
             onGround = false;
             upwardsVelocity -= gravity;
         }
+        if(isTouching(Spikes.class)){
+            takeDamage = true;
+            upwardsVelocity = pushBack;
+            setLocation(getX(), getY() - upwardsVelocity);
+            onGround = false;
+            upwardsVelocity -= gravity;
+        }
+        if(getY() >= 600){
+            takeDamage = true;
+            List<Ground> ground = getObjectsInRange(600, Ground.class);
+            if(ground.isEmpty()) return;
+            Ground nearestGround = ground.get(0);
+            int groundSide = nearestGround.getX() - nearestGround.getImage().getWidth() / 2 + 10;
+            setLocation(groundSide + 100, 0);
+        }
     }
     
     private void updateScore(){
-        //MyWorld myworld = (MyWorld) getWorld();
+        MyWorld myworld = (MyWorld) getWorld();
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
         if(!takeDamage && monster != null){
             if(monster instanceof BatBrain){
@@ -370,34 +401,62 @@ public class Sonic extends SmoothMover
             } else if(monster instanceof buzzBomber) {
                 score += 70;
             }
-            //myworld.scoreRecord.setValue(score);
+            myworld.scoreRecord.setValue(score);
         } else if(takeDamage && monster != null){
             score -= 10;
-            //myworld.scoreRecord.setValue(score);
+            myworld.scoreRecord.setValue(score);
         }
     }
     
     public void coinUpdate(){
-        //MyWorld myworld = (MyWorld) getWorld();
+        MyWorld myworld = (MyWorld) getWorld();
         if(isTouching(Coins.class)){
-            removeTouching(Coins.class);
             numCoins++;
-            //myworld.coins.setValue(numCoins);
+            myworld.coins.setValue(numCoins);
         }
     }
     
     public void act()
     {
         // Add your action code here.
+        MyWorld myworld = (MyWorld) getWorld();
         animation();
-        if(takeDamage == false) move();
+        if (takeDamage == false){
+            handleWalkOnGrassSound();
+            move();
+        }
         jump();
         damage();
         afk();
-        //getWorld().addObject(coins, 128, 38);
-        //getWorld().addObject(scoreRecord, 130, 35);
         coinUpdate();
         updateScore();
-        //System.out.println(getImage().getWidth() + " " + getImage().getHeight());
+        handleGrassSound();
+        score++;
+        myworld.scoreRecord.setValue(score);
+        if(life <= 0){
+            //Greenfoot.setWorld(new lossing());
+        } else if(getX() >= getWorld().getWidth() * 2 && life > 0){
+            //Greenfoot.setWorld(new winning());
+        }
+    }
+    
+    private void handleGrassSound() {
+        if (Greenfoot.isKeyDown("shift") && onGround && !takeDamage) {
+            if (!grass.isPlaying()) {
+                grass.play();
+            }
+        } else {
+            grass.stop();
+        }
+    }
+    
+    private void handleWalkOnGrassSound() {
+        if (Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a") && onGround && !takeDamage) {
+            if (!walkOnGrass.isPlaying()) {
+                walkOnGrass.play();
+            }
+        } else {
+            walkOnGrass.stop();
+        }
     }
 }

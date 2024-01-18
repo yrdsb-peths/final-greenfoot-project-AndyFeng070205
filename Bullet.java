@@ -34,6 +34,6 @@ public class Bullet extends Actor
         updateRight();
         if(right) move(5);
         else move(-5);
-        if(isTouching(Sonic.class) || isAtEdge()) getWorld().removeObject(this);
+        if(isAtEdge() || isTouching(Ground.class)) getWorld().removeObject(this);
     }
 }

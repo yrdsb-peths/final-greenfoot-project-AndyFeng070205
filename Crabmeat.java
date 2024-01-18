@@ -35,11 +35,6 @@ public class Crabmeat extends Monsters
     {
         // Add your action code here.
         animation();
-        //super.getRecked();
-        List<Sonic> sonic = getObjectsInRange(100, Sonic.class);
-        if(sonic.isEmpty()) return;
-        Sonic nearestSonic = sonic.get(0);
-        if(!nearestSonic.takeDamage && isTouching(Sonic.class)) getWorld().removeObject(this);
-        else return;
+        super.getRecked();
     }
 }

@@ -8,7 +8,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class instructionWorld extends World
 {
-    Label label4 = new Label("< back to menu", 30);
+    private Label label4 = new Label("< back to menu", 30);
+    private Label label5 = new Label("Keys", 40);
+    private Label label6 = new Label("Monsters", 40);
+    private Label label7 = new Label("how to play?", 40);
     /**
      * Constructor for objects of class instructionWorld.
      * 
@@ -25,6 +28,9 @@ public class instructionWorld extends World
      */
     public void act(){
         backToMenu(label4);
+        backToMenu(label5);
+        backToMenu(label6);
+        backToMenu(label7);
     }
     
     public void backToMenu(Label label){
@@ -35,6 +41,7 @@ public class instructionWorld extends World
     
     private void prepare()
     {
+        addObject(label4, 140, 35);
         Label label = new Label("press <W> <A> <S> <D> to move", 34);
         addObject(label,297,168);
         label.setLocation(322,157);
@@ -50,18 +57,5 @@ public class instructionWorld extends World
         label.setLocation(317,185);
         label.setLocation(320,190);
         label2.setLocation(308,243);
-        //Label label4 = new Label("< back to menu", 30);
-        addObject(label4,172,59);
-        label4.setLocation(151,45);
-        label3.setLocation(280,304);
-        label2.setLocation(331,247);
-        label.setLocation(336,199);
-        label2.setLocation(324,243);
-        label.setLocation(273,199);
-        removeObject(label);
-        removeObject(label2);
-        removeObject(label3);
-        label4.setLocation(124,38);
-        label4.setLocation(131,30);
     }
 }

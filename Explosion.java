@@ -15,6 +15,7 @@ public class Explosion extends SmoothMover
     GreenfootImage[] explosion = new GreenfootImage[8];
     GreenfootImage explode = new GreenfootImage("images/explosion/explode0.png");
     SimpleTimer timer = new SimpleTimer();
+    GreenfootSound explosionSound = new GreenfootSound("sounds/explosion.mp3");
     
     public Explosion(){
         setImage(explode);
@@ -22,6 +23,7 @@ public class Explosion extends SmoothMover
         for(int i = 0; i < explosion.length; i++){
             explosion[i] = new GreenfootImage("images/explosion/explode" + i + ".png");
             explosion[i].scale(225, 180);
+            explosionSound.setVolume(30);
         }
     }
     
@@ -41,9 +43,11 @@ public class Explosion extends SmoothMover
         }
     }
     
+    
     public void act()
     {
         // Add your action code here.
+        explosionSound.play();
         explodeAnimation();
     }
 }

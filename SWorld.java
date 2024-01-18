@@ -81,13 +81,6 @@ public class SWorld extends World
         if (scroller) genActors.add(obj);
     }
     
-    /**
-     * Adds a scrollable object into the world, listing them in the Actor array.
-     *
-     * @param obj the scrollable object to add to the world
-     * @param xLoc the x-coordinate to place the object
-     * @param yLoc the y-coordinate to place the object
-     */
     public void addObject(Actor obj, int xLoc, int yLoc)
     {
         addObject(obj, xLoc, yLoc, true);
