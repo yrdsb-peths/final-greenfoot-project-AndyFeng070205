@@ -709,5 +709,8 @@ public class exampleWorld extends SWorld
         ground8.setLocation(4370,498);
         spikes3.setLocation(4353,484);
         spikes3.setLocation(4365,482);
+        End end = new End();
+        addObject(end,7899,444);
+        end.setLocation(7922,453);
     }
 }

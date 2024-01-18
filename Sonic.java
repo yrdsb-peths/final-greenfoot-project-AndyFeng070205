@@ -443,8 +443,8 @@ public class Sonic extends SmoothMover
         myworld.scoreRecord.setValue(score);
         if(life <= 0){
             Greenfoot.setWorld(new lossing(score, numCoins));
-        } else if(getX() >= getWorld().getWidth() * 2 && life > 0){
-            //Greenfoot.setWorld(new winning());
+        } else if(isTouching(End.class)){
+            Greenfoot.setWorld(new winning(score, numCoins));
         }
     }
     

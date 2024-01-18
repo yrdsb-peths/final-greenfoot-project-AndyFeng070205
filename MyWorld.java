@@ -10,8 +10,8 @@ public class MyWorld extends SWorld
      */
     Label coins = new Label("0", 35);
     Label scoreRecord = new Label("0", 35);
-    Label scoreLabel = new Label("score", 35);
-    Label coinLabel = new Label("coins", 35);
+    Label scoreLabel = new Label("score: ", 35);
+    Label coinLabel = new Label("coins: ", 35);
     GreenfootSound music = new GreenfootSound("sounds/music.mp3");
     
     
@@ -24,6 +24,8 @@ public class MyWorld extends SWorld
         setScrollingBackground(bg);
         addObject(scoreRecord, 150, 35, false);
         addObject(coins, 150, 80, false);
+        addObject(scoreLabel, 70, 35, false);
+        addObject(coinLabel, 70, 80, false);
         //addObject(new Ground(), 400, 400, true);
         //addObject(new Crabmeat(), 500, 300, true);
         prepare();
@@ -709,17 +711,13 @@ public class MyWorld extends SWorld
         Spring spring4 = new Spring();
         addObject(spring4,7137,425);
         spring4.setLocation(7137,431);
-        Label label = new Label("Coins: ", 35);
-        addObject(label,48,82,false);
-        label.setLocation(64,81);
-        label.setLocation(68,83);
-        label.setLocation(71,76);
-        //Label label2 = new Label("Coins", 35);
-        Label label2 = new Label("Score: ", 35);
-        addObject(label2,57,19,false);
-        label2.setLocation(68,34);
-        Label label3 = new Label("Life: ", 35);
-        addObject(label3,22,491,false);
-        label3.setLocation(85,119);
+        spikes3.setLocation(4338,482);
+        spikes3.setLocation(4386,497);
+        ground8.setLocation(4370,498);
+        spikes3.setLocation(4353,484);
+        spikes3.setLocation(4365,482);
+        End end = new End();
+        addObject(end,7899,444);
+        end.setLocation(7922,453);
     }
 }
