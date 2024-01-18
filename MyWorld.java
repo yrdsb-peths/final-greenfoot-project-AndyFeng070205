@@ -36,7 +36,6 @@ public class MyWorld extends SWorld
     
     private void prepare()
     {
-
         Ground ground = new Ground();
         addObject(ground,167,551);
         ground.setLocation(101,590);

@@ -19,12 +19,8 @@ public class Monsters extends Actor
         type = name;
     }
     public void getRecked(){
-        Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
-        if(sonic == null) return;
-        if(!sonic.takeDamage){
+        if(isTouching(Sonic.class)){
             getWorld().removeObject(this);
-        } else {
-            return;
         }
     }
     public void act()
