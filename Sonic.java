@@ -235,6 +235,7 @@ public class Sonic extends SmoothMover
     private void touchGround(){
         Ground ground = (Ground) getOneIntersectingObject(Ground.class);
         if(ground == null) return;
+        //calculate sonic's and ground's top, bottom, left and right
         int groundTop = ground.getY() - ground.getImage().getHeight() / 2;
         int groundBottom = ground.getY() + ground.getImage().getHeight() / 2;
         int groundLeft = ground.getX() - ground.getImage().getWidth() / 2;
@@ -306,6 +307,8 @@ public class Sonic extends SmoothMover
             int sonicBottom = getY() + getImage().getHeight() / 2;
             boolean isTouchingTop = sonicBottom >= springTop;
             if(isTouchingTop){
+                //when touching spring, jump force will be increased
+                // to 30, super jump!!!
                 upwardsVelocity += (jumpForce + 10);
                 if(right) setLocation(getX() + 1, getY() - upwardsVelocity);
                 else setLocation(getX() - 1, getY() - upwardsVelocity);
@@ -328,6 +331,9 @@ public class Sonic extends SmoothMover
         }
     }
     
+    /**
+     * mothod which controls the movement of sonic
+     */
     private void move(){
         Ground ground = (Ground) getOneIntersectingObject(Ground.class);
         if(isWaiting){
@@ -373,7 +379,8 @@ public class Sonic extends SmoothMover
     
     /**
      * the method controls sonic's takeDamage and pushBack when it
-     * touches monsters. 
+     * touches monsters. When sonic touches different monsters, the effect
+     * it different, some monster deals damage, others might not
      */
     GreenfootImage up = new GreenfootImage("images/fall/fall0.png");
     GreenfootImage surprise = new GreenfootImage("images/fall/fall1.png");
