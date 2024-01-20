@@ -29,6 +29,13 @@ public class Motobug extends Monsters
         }
     }
     
+    
+    /**
+     * this method is responsible for the moving and animation of 
+     * motobug. The purpose is to let motobug move in every frame. After
+     * moving 8 times, motobug will turns around and move the opposite
+     * direction
+     */
     private int moveRight = 0;
     private int moveLeft = 0;
     private int moveLeftTimes = 0;
@@ -59,13 +66,18 @@ public class Motobug extends Monsters
         }
     }
     
+    /**
+     * if sonic is in range, motobug will dashes towards sonic. The
+     * direction is different when sonic is at different position
+     */
     public void attackSonic(){
         List<Sonic> sonic = getObjectsInRange(300, Sonic.class);
         if(!sonic.isEmpty() && isTouching(Ground.class)){
             Sonic nearestSonic = sonic.get(0); // Get the first Sonic in the list
             double distance = getX() - nearestSonic.getX();
             if(nearestSonic.takeDamage) return;
-            if(distance > 0){
+            //motobug only attack sonic when it is on the ground
+            if(distance > 0 && nearestSonic.onGround == true){
                 right = false;
                 move(-7);
             } else if (distance < 0 && nearestSonic.onGround == true){
@@ -76,15 +88,25 @@ public class Motobug extends Monsters
                 else move(-7);
             }
             if(isTouching(Sonic.class)){
+                //deal damage to sonic if sonic touches it
                 nearestSonic.damage();
             }
         }
     }
     
+    /**
+     * the purpose of this class is to let motobug drops when it is not
+     * on the ground.
+     */
     private int up = 0;
     private int gravity = 1;
     public void drop(){
         if(!isTouching(Ground.class)){
+            /*
+            when it is not touching ground.class, motobug position will 
+            be set down in an acceleration like pattern. As up decreases
+            , the speed of falling down will get faster.
+            */
             up -= gravity;
             setLocation(getX(), getY() - up);
         }

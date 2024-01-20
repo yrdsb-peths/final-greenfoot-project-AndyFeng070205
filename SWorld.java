@@ -23,7 +23,21 @@ public class SWorld extends World
     {
         this(wide, high, cellSize, scrollWide, high);
     }
-
+    
+    /**
+     * Adds the main actor into the world at the center of the window and
+     * sets the range in movement within the window for the actor,<br>
+     * <br>
+     * NOTE: this method must be called prior to calling <i>setScrollingBackground</i>
+     * <br>
+     * NOTE 2: if placing the main actor to a location where scrolling will end up taking place before moving it,
+     * place a call the the 'act' method of this class at the end of the constructor of its subclass
+     * using 'super.act()'.<br>
+     *
+     * @param main the actor that is to always stay in view
+     * @param xRange the horizontal range of movement within the window
+     * @param yRange the vertical range of movement within the window
+     */
     public void setMainActor(Actor main, int xRange, int yRange)
     {
         if (main == null)
@@ -42,6 +56,9 @@ public class SWorld extends World
         actorMaxY = getHeight()/2+yRange/2;
     }
 
+    /*
+       add a scrolling background to the world
+    */
     public void setScrollingBackground(GreenfootImage scrollingBackground)    
     {
         if(mainActor==null)
@@ -54,7 +71,11 @@ public class SWorld extends World
         background.scale(scrollingWidth*getCellSize(), scrollingHeight*getCellSize());
         scrollBackground();
     }
-
+    /*
+    this method draws the background as the mainActor move forward.
+    when the mainActor move forward, this method will draws the part 
+    of the background image at x and y.
+    */
     public void fillScrollingBackground(GreenfootImage fillImage)
     {
         if(mainActor==null)
@@ -74,7 +95,11 @@ public class SWorld extends World
                 background.drawImage(fillImage, x, y);
         scrollBackground();
     }
-
+    
+    /*
+    the new addObject has one more variable, scroller, which decides
+    whether or not the actor scroll as the world scroll
+    */
     public void addObject(Actor obj, int xLoc, int yLoc, boolean scroller)
     {
         super.addObject(obj, xLoc, yLoc);
@@ -104,7 +129,8 @@ public class SWorld extends World
         scrollObjects();
         scrollBackground();
     }
-
+    
+    //Scroll the background
     private void scrollBackground() {
         if (background == null) return;
         int w = getWidth(), h = getHeight(), c = getCellSize();

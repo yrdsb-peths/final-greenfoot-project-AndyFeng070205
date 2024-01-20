@@ -29,12 +29,19 @@ public class Caterkiller extends Monsters
         }
     }
     
+    
+    /**
+     * this method is responsible for both the animation and movement
+     * of caterkiller, the purpose is that let caterkiller move once 
+     * every frame, and turns around every 12 moves
+     */
     private int frame = 0;
     private int moveTimes = 0;
     public void animation(){
         if(timer.millisElapsed() < 150) return;
         timer.mark();
         if(right){
+            //after caterkiller moves 12 times, it turns around
             if(moveTimes >= 12){
                 right = false;
                 moveTimes = 0;
@@ -44,6 +51,7 @@ public class Caterkiller extends Monsters
             setImage(caterKillerR[frame]);
             frame = (frame + 1) % caterKillerR.length;
         } else {
+            //after caterkiller moves 12 times, it turns around
             if(moveTimes >= 12){
                 right = true;
                 moveTimes = 0;

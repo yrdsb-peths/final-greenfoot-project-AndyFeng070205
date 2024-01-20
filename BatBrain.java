@@ -34,11 +34,17 @@ public class BatBrain extends Monsters
         flyingLeft[1].scale(40, 20);
     }
     
+    /*
+       the method detects whether or not sonic is in the range of 
+       attack, if true, batBrain canStarts to move, else, it will stay
+       fixed until sonic is inRange again
+       */
     public void sonicInRange(){
         List<Sonic> sonic = getObjectsInRange(340, Sonic.class);
         if(!sonic.isEmpty()){
             canMove = true;
             Sonic nearestSonic = sonic.get(0);
+            //drops to nearestSonic current Y position and moves back and forth
             if(getY() < nearestSonic.getY()){
                 setLocation(getX(), getY() + 2);
             } else if(getY() > nearestSonic.getY()){
@@ -48,11 +54,13 @@ public class BatBrain extends Monsters
             }
             flying();
         } else {
+            //if sonic is not in range, it waits until sonic is in range again
             setImage(waiting);
             canMove = false;
         }
     }
     
+    //animate batBrain
     private int frame = 0;
     public void flying(){
         if(timer.millisElapsed() < 190) return;

@@ -20,6 +20,7 @@ public class Bomb extends Monsters {
         }
     }
     
+    //create a explosion and then remove itself
     public void explosion(){
         getWorld().addObject(new Explosion(), getX(), getY() - 30);
         getWorld().removeObject(this);

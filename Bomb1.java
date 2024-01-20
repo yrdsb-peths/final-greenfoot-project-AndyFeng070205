@@ -36,6 +36,9 @@ public class Bomb1 extends Bomb
         bomb1Right[4].scale(53, 57);
     }
     
+    /**
+     * this method controls both bomb's animation and move around
+     */
     private int moveRightIndex = 0;
     private int moveLeftIndex = 0;
     private int moveLeftTime = 0;
@@ -44,6 +47,7 @@ public class Bomb1 extends Bomb
         if(timer.millisElapsed() < 220) return;
         timer.mark();
         if(right == true){
+            //after bomb moves 8 times, it turns around
             if(moveRightTime == 8){
                 right = false;
                 moveRightTime = 0;
@@ -54,6 +58,7 @@ public class Bomb1 extends Bomb
             moveRightIndex = (moveRightIndex + 1) % bomb1Right.length;
         }
         if(right == false){
+            //after bomb moves 8 times, it turns around
             if(moveLeftTime == 8){
                 right = true;
                 moveLeftTime = 0;
@@ -65,6 +70,10 @@ public class Bomb1 extends Bomb
         }
     }
     
+    /**
+     * if sonic is touching bomb1, sonic is responsible for removing
+     * the bomb, but before that, act explosion will be created first
+     */
     public void explode(){
         Sonic sonic = (Sonic) getOneIntersectingObject(Sonic.class);
         if(sonic == null) return;

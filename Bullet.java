@@ -20,6 +20,11 @@ public class Bullet extends Actor
         bullet.scale(10, 10);
     }
     
+    /*
+    Only buzzBomber and Green shoots bullet, however, the direction
+    is unknown. So b and g help me access the right variable of 
+    buzzBomber and Green for the bullet to travel to the right direction
+    */
     public void updateRight(){
        buzzBomber b = (buzzBomber) getOneIntersectingObject(buzzBomber.class);
        Green g = (Green) getOneIntersectingObject(Green.class);
@@ -34,6 +39,7 @@ public class Bullet extends Actor
         updateRight();
         if(right) move(5);
         else move(-5);
+        //bullet only remove if and only if it touches Sonic, the edge of the world or the ground
         if(isAtEdge() || isTouching(Ground.class)) getWorld().removeObject(this);
     }
 }

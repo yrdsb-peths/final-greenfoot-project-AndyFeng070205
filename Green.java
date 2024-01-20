@@ -20,6 +20,15 @@ public class Green extends Newtron
         
     }
     
+    
+    /**
+     * First of all, it cannnot move
+     * similar logic when compared to buzzBomber
+     * when sonic is in range, it creates a bullet which goes towards
+     * sonic, however, it can only shoots bullet approximately every 2
+     * seconds 
+     * (recoverTime = 120, greenfoot operation each second is around 64)
+     */
     private int recoverTime = 120;
     private boolean canFire = true;
     public void attackSonic(){
@@ -28,6 +37,7 @@ public class Green extends Newtron
             Sonic nearestSonic = sonic.get(0);
             double xDistance = Math.abs(getX() - nearestSonic.getX());
             double yDistance = Math.abs(getY() - nearestSonic.getY());
+            // use atan to find the degree the bullet needs to turn
             double turnDegree = Math.atan(yDistance / xDistance);
             if(nearestSonic.takeDamage) return;
             if(canFire){

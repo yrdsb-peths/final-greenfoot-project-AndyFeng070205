@@ -24,6 +24,7 @@ public class Coins extends Actor
         coin.setVolume(50);
     }
     
+    //animate coin
     private int frame = 0;
     public void animation(){
         if(timer.millisElapsed() < 80) return;
@@ -36,6 +37,7 @@ public class Coins extends Actor
     {
         // Add your action code here.
         animation();
+        //remove itself and play sound after being touched by sonic
         if(isTouching(Sonic.class)){
             coin.play();
             getWorld().removeObject(this);

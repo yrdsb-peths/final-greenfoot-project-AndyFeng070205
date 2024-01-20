@@ -32,6 +32,8 @@ public class Blue extends Newtron
         }
     }
     
+    
+    //animation of blue
     private int frame = 0;
     private int transformFrame = blueTransform.length - 1;
     private int transformBack = blueTransform.length - 1;
@@ -75,6 +77,11 @@ public class Blue extends Newtron
         }
     }
     
+    /**
+     * when sonic is in range, blue will get ready to attack.
+     * when the distance between blue and sonic equals or is less than 
+     * 150, blue will charge towards sonic.
+     */
     public void attack(){
         List<Sonic> sonic = getObjectsInRange(200, Sonic.class);
         if(!sonic.isEmpty()){
@@ -82,19 +89,21 @@ public class Blue extends Newtron
             int xDistance = Math.abs(getX() - nearestSonic.getX());
             int yDistance = Math.abs(getY() - nearestSonic.getY());
             double hypDistance = Math.pow(xDistance * xDistance + yDistance * yDistance, 1/2);
+            //use arc tangent to calculate the angle blue needs to turn
             double turnDegree = Math.atan(yDistance / xDistance);
             if(nearestSonic.takeDamage) return;
             if(hypDistance < 150){
-                if(right) move(3);
-                else move(-3);
+                if(right) move(1);
+                else move(-1);
             }
             if(right){
                 setRotation((int)(turnDegree * 180 / Math.PI));
-                move(3);
+                move(1);
             } else {
                   setRotation(-(int)(turnDegree * 180 / Math.PI));
-                move(-3);
+                move(-1);
             }
+            //if it touches sonic, it deals damage to sonic and destroy itself
             if(isTouching(Sonic.class)){ 
                 nearestSonic.damage();
                 getWorld().removeObject(this);

@@ -90,6 +90,11 @@ public class Sonic extends SmoothMover
         //sonicWalkLeft[0].scale()
     }
     
+    
+    /**
+     * animation of sonic, the method controls sonic's animation at 
+     * different conditions.
+     */
     private int indexRight = 0;
     private int indexLeft = 0;
     private int indexSR = 0;
@@ -101,12 +106,15 @@ public class Sonic extends SmoothMover
     private int crawlFrame = 0;
     private void animation(){
         Ground ground = (Ground) getOneIntersectingObject(Ground.class);
+        //if sonic has been waiting for a long time
         if(isWaiting && !takeDamage){
             if(timer.millisElapsed() < 220) return;
             timer.mark();
             setImage(sonicPrepare[waitingIndex]);
             waitingIndex = (waitingIndex + 1) % sonicPrepare.length;
         } else if(takeDamage && !isTouching(Ground.class)){
+            //the sonic is taking damage, this controls the image of sonic
+            // when it moves up, slow down and fall down
             if(upwardsVelocity >= 1){
                 setImage(up);
                 up.scale(65, 70);
@@ -120,6 +128,7 @@ public class Sonic extends SmoothMover
                 fall.scale(70, 50);
             }
         } else if(takeDamage && isTouching(Ground.class)){
+            //recovering~~~
             if(timer.millisElapsed() < 500) return;
             timer.mark();
             if(recoverFrame >= sonicRecovering.length){
@@ -133,6 +142,7 @@ public class Sonic extends SmoothMover
         } else {
             if(timer.millisElapsed() < 95) return;
             timer.mark();
+            //when sonic is walking
             if(Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("a")){
                 walkOnGrass.play();
                 if(right){
@@ -143,6 +153,7 @@ public class Sonic extends SmoothMover
                     indexLeft = (indexLeft + 1) % sonicWalkLeft.length;
                 }
             }
+            //when sonic is running
             if(Greenfoot.isKeyDown("shift")){
                 if(right){
                     setImage(sonicSprintRight[indexSR]);
@@ -154,6 +165,9 @@ public class Sonic extends SmoothMover
                     walkOnGrass.play();
                 }
             }
+            //when sonic is jumping, however, it is important to know
+            //that sonic's image is different when it is taking and not 
+            //taking damage
             if(!takeDamage && !isTouching(Ground.class)){
                 if(right){
                     setImage(sonicJumpRight[indexJumpRight]);
@@ -170,6 +184,11 @@ public class Sonic extends SmoothMover
         }
     }
     
+    
+    /**
+     * the method check where does sonic touch the monster
+     * it decides whether or not sonic takes damage when touching monster
+     */
     private void touchCheck() {
         Monsters monster = (Monsters) getOneIntersectingObject(Monsters.class);
         if(monster != null && monster instanceof buzzBomber){
@@ -179,6 +198,7 @@ public class Sonic extends SmoothMover
             takeDamage = true;
             return;
         } else if (monster != null) {
+            //get top, bottom, left and right of monster and sonic
             double sonicTop = getY() - getImage().getHeight() / 2;
             double sonicBottom = getY() + getImage().getHeight() / 2; 
             double monsterTop = monster.getY() - monster.getImage().getHeight() / 2; 
@@ -188,9 +208,12 @@ public class Sonic extends SmoothMover
             double sonicLeft = getX() - getImage().getWidth() / 2; 
             double monsterRight = monster.getX() + monster.getImage().getWidth() / 2; 
             double monsterLeft = monster.getX() - monster.getImage().getWidth() / 2; 
-    
+            
+            //sonic's bottom must be higher or equals to the top of monster
             boolean isTouchingTop = sonicBottom <= monsterTop;
+            //when sonic is touching the sides of monsters
             boolean isTouchingSide = (sonicRight >= monsterLeft || sonicLeft <= monsterRight) && sonicBottom >= monsterTop;
+            //when sonic the touching the bottom of sonic
             boolean isTouchingBottom = sonicTop <= monsterBottom && sonicTop > monsterTop;
             
             if (isTouchingTop) {
@@ -228,6 +251,8 @@ public class Sonic extends SmoothMover
         boolean onRightSide = sonicLeft > groundRight - 5 && isTouching(Ground.class);;
         
         if(touchingTop && !takeDamage){
+            //if is on ground, onGround is true, and set sonic's location
+            //to standing on the ground
             onGround = true;
             setLocation(getX(), groundTop - getImage().getHeight() / 2 + 1);
             upwardsVelocity = 0;
@@ -237,6 +262,10 @@ public class Sonic extends SmoothMover
         }
     }
     
+    
+    /**
+     * controls the jump of sonic
+     */
     private int gravity = 1;
     public boolean onGround = false;
     private int jumpForce = 20;
@@ -244,6 +273,8 @@ public class Sonic extends SmoothMover
     private void jump(){
         Spring spring = (Spring) getOneIntersectingObject(Spring.class);
         if(!isTouching(Ground.class)){
+            //when sonic is in the air, the upwardsVelocity is reducing
+            //due to gravity
             upwardsVelocity -= gravity;
             if(takeDamage){
                 setLocation(getX() - 2, getY() - upwardsVelocity);
@@ -257,6 +288,7 @@ public class Sonic extends SmoothMover
             upwardsVelocity = 0;
         }
         if(Greenfoot.isKeyDown("w") && onGround){
+            //when pressing "w", play jump
             jump.play();
             if(takeDamage) return;
             upwardsVelocity += jumpForce;
@@ -265,6 +297,9 @@ public class Sonic extends SmoothMover
             onGround = false;
             upwardsVelocity -= gravity;
         }
+        /*
+        when touching spring, sonic is bounced up   
+        */
         if(isTouching(Spring.class)){
             if(spring == null) return;
             int springTop = spring.getY() - spring.getImage().getHeight() / 2;
@@ -280,6 +315,7 @@ public class Sonic extends SmoothMover
         }
     }
     
+    //if the player afk of too long, sonic will enter isWaiting state
     private int afkTime = 120;
     private void afk(){
         if(!(Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d") || Greenfoot.isKeyDown("shift") || Greenfoot.isKeyDown("w"))){
@@ -334,6 +370,11 @@ public class Sonic extends SmoothMover
         }
     }
     
+    
+    /**
+     * the method controls sonic's takeDamage and pushBack when it
+     * touches monsters. 
+     */
     GreenfootImage up = new GreenfootImage("images/fall/fall0.png");
     GreenfootImage surprise = new GreenfootImage("images/fall/fall1.png");
     GreenfootImage fall = new GreenfootImage("images/fall/fall2.png");

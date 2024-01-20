@@ -34,6 +34,7 @@ public class Bomb2 extends Bomb
         rangeBombLeft[4].scale(53, 78);
     }
     
+    //check whether or not sonic is in the exploding range
     public boolean sonicInRange() {
         List<Sonic> inRange = getObjectsInRange(100, Sonic.class);
         return !inRange.isEmpty();
@@ -47,6 +48,7 @@ public class Bomb2 extends Bomb
         if(timer.millisElapsed() < 220) return;
         timer.mark();
         if(right == true){
+            //after bomb moves 8 times, it turns around
             if(moveRightTimes == 8){
                 right = false;
                 moveRightTimes = 0;
@@ -57,6 +59,7 @@ public class Bomb2 extends Bomb
             moveRight = (moveRight + 1) % rangeBombRight.length;
         }
         else{
+            //after bomb moves 8 times, it turns around
             if(moveLeftTimes == 8){
                 right = true;
                 moveLeftTimes = 0;

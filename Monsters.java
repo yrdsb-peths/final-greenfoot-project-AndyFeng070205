@@ -18,6 +18,8 @@ public class Monsters extends Actor
     public Monsters(String name){
         type = name;
     }
+    
+    // is touched by sonic, the monster will be removed
     public void getRecked(){
         if(isTouching(Sonic.class)){
             getWorld().removeObject(this);

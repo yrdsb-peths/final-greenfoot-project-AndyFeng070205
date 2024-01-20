@@ -45,7 +45,12 @@ public class buzzBomber extends Monsters
         }
     }
     
-    
+    /**
+     * animation of buzzBomber. 
+     * there are two sets of animation, attack animation and moveing animation
+     * when in attack animation, buzzBomber cannot move but shoots bullets
+     * towards sonic, while moving left and right when in moving animation
+     */
     private int leftFrame = 0;
     private int rightFrame = 0;
     private int moveTimes = 0;
@@ -95,6 +100,14 @@ public class buzzBomber extends Monsters
         }
     }
     
+    
+    /**
+     * First of all, it cannnot move
+     * when sonic is in range, it creates a bullet which goes towards
+     * sonic, however, it can only shoots bullet approximately every 2
+     * seconds 
+     * (recoverTime = 120, greenfoot operation each second is around 64)
+     */
     private int recoverTime = 120;
     private boolean canFire = true;
     public void attackSonic(){
@@ -103,9 +116,11 @@ public class buzzBomber extends Monsters
             Sonic nearestSonic = sonic.get(0);
             xDistance = Math.abs(getX() - nearestSonic.getX());
             yDistance = Math.abs(getY() - nearestSonic.getY());
+            // use atan to find the degree the bullet needs to turn
             turnDegree = Math.atan(yDistance / xDistance);
             if(canFire){
                 Bullet b = new Bullet();
+                // turns the bullet to the right direction
                 if(right) b.setRotation((int)(turnDegree * 180 / Math.PI) - 180);
                 else b.setRotation(-(int)(turnDegree * 180 / Math.PI));
                 getWorld().addObject(b, getX() - 5, getY() + 10);
